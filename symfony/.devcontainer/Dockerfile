@@ -18,11 +18,11 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Installing Node.js and NPM
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm@latest \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+#     && apt-get install -y nodejs \
+#     && npm install -g npm@latest \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Setting working directory
 WORKDIR /workspace
