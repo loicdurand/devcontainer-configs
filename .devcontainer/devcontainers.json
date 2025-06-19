@@ -1,0 +1,17 @@
+{
+    "name": "Loïc's Dev Containers",
+    "configurations": [
+        {
+            "name": "Symfony Dev Environment", 
+            "dockerComposeFile": "../.devcontainer/docker-compose.symfony.yml",
+            "service": "php",
+            "workspaceFolder": "/workspace",
+            "features": {
+                "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+                "ghcr.io/devcontainers/features/node:1": {
+                    "version": "lts"
+                }
+            }
+        }
+    ]
+}
