@@ -3,6 +3,9 @@
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 
+apt-get update && apt-get install -y default-mysql-client && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Wait for MariaDB to be ready
 MAX_ATTEMPTS=30
 ATTEMPT=1
