@@ -1,11 +1,12 @@
 #!/bin/bash
 
+echo "Starting post-create setup at $(date)"
+
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 
-apt-get update && apt-get install -y default-mysql-client
-
 # Wait for MariaDB to be ready
+echo "DB connection check: mysql -h mysql -u mariadb -pmariadb mariadb -e 'SELECT 1'"
 MAX_ATTEMPTS=30
 ATTEMPT=1
 until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
@@ -37,21 +38,8 @@ When ready, serve the application with:
 
 EOF
 
-# Ensure permissions
-chown -R www-data:www-data /workspace
-chmod -R 775 /workspace
-
-# Install Node.js dependencies
-# npm install || echo "Warning: npm install failed, continuing..."
-# echo "Node.js dependencies installed."
-
-# Install PHP dependencies
-# composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
-# echo "Composer dependencies installed."
-
-# Clear Symfony cache
-# php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
-# echo "Symfony cache cleared."
+# Changement su shell
+/bin/bash
 
 echo "Post-create setup completed at $(date)"
 exit 0

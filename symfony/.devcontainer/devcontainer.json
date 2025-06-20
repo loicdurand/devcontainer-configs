@@ -3,11 +3,10 @@
   "dockerComposeFile": "../../.devcontainer/docker-compose.symfony.yml",
   "service": "php",
   "workspaceFolder": "/workspace",
+  "remoteUser": "loic",
+  "containerUser": "loic",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts"
-    }
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "forwardPorts": [
     8000,
@@ -43,7 +42,7 @@
           "**/var/cache/**",
           "**/var/log/**"
         ],
-        "intelephense.environment.documentRoot": "/workspace/public",
+        "intelephense.environment.documentRoot": "/workspace",
         "intelephense.stubs": [
           "apache",
           "bcmath",
