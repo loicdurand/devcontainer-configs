@@ -19,7 +19,7 @@ until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
 done
 echo "MariaDB is ready!"
 
-echo <<EOF 
+cat << EOF
 If you are building a traditional web application:
     1. Open a terminal in the container.
     2. Run 'symfony new --webapp my_project' to create a new Symfony project."
@@ -28,7 +28,18 @@ If you are building a headless API application:"
     1. Open a terminal in the container."
     2. Run 'symfony new my_project' to create a new Symfony project."
 
+When ready, serve the application with:
+    1. Open a terminal in the container.
+    2. Run 'symfony serve --no-tls --listen-ip=0.0.0.0 -d' to start the Symfony server in detached mode.
+    3. Access your application at http://localhost:8000
+    4. To stop the server, run 'symfony server:stop'.
+    5. To restart the server, run 'symfony server:start'.
+
 EOF
+
+# Ensure permissions
+chown -R www-data:www-data /workspace
+chmod -R 775 /workspace
 
 # Install Node.js dependencies
 # npm install || echo "Warning: npm install failed, continuing..."
