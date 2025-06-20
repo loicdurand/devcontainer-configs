@@ -1,6 +1,0 @@
-[submodule "symfony-devcontainer"]
-	path = symfony-devcontainer
-	url = https://github.com/loicdurand/symfony-devcontainer
-[submodule "symfony/accueil"]
-	path = symfony/accueil
-	url = https://github.com/loicdurand/accueil
