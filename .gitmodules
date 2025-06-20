@@ -1,0 +1,3 @@
+[submodule "symfony-devcontainer"]
+	path = symfony-devcontainer
+	url = https://github.com/loicdurand/symfony-devcontainer
