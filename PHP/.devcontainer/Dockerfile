@@ -1,15 +1,20 @@
-FROM php:8.2-fpm
+FROM php:8.3-apache
 
 # Installing system dependencies
 RUN apt-get update && \
     apt-get install -y \
+    sudo \
     git \
     unzip \
     nano \
     libzip-dev \
     libicu-dev \
     libpq-dev \
-    default-mysql-client
+    default-mysql-client \
+    apache2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN docker-php-ext-install \
     pdo_mysql \
     zip \
@@ -30,6 +35,22 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
+# Configure Apache
+COPY .devcontainer/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY .devcontainer/certs/localhost.crt /etc/ssl/certs/localhost.crt
+COPY .devcontainer/certs/localhost.key /etc/ssl/private/localhost.key
+
+# Create directories for Apache logs and Symfony
+RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /var/log/apache2
+
+
+# Create directories for certs, Caddy logs and Symfony
+RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /workspace/accueil/var/log
+
+# COPY .devcontainer/certs/localhost.crt /etc/caddy/certs/localhost.crt
+# COPY .devcontainer/certs/localhost.key /etc/caddy/certs/localhost.key
+# COPY .devcontainer/caddy/Caddyfile /etc/caddy/Caddyfile
+
 # **************************
 # * Create a non root user *
 # **************************
@@ -41,10 +62,7 @@ ARG USER_GID=$USER_UID
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
     # Add sudo support. Omit if you don't need to install software after connecting.
-    && apt-get update \
-    && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     # Add user to sudo & www-data groups
@@ -69,6 +87,11 @@ WORKDIR /workspace
 # Setting permissions
 RUN chown -R www-data:www-data /workspace
 RUN chmod -R 775 /workspace
+RUN chown -R www-data:www-data /etc/ssl/certs /etc/ssl/private && chmod -R 644 /etc/ssl/certs /etc/ssl/private
+RUN chown -R www-data:www-data /var/log/apache2 && chmod -R 775 /var/log/apache2
 
-# Exposing port for Symfony dev server
-EXPOSE 8000
+# Exposing ports for Apache
+EXPOSE 8000 443
+
+# Start Apache in foreground
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

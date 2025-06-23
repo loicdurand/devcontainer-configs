@@ -1,0 +1,3 @@
+[submodule "PHP/accueil"]
+	path = PHP/accueil
+	url = https://github.com/loicdurand/accueil.git

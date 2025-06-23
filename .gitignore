@@ -1,1 +1,4 @@
 **/.devpod-internal/
+**/*.pem
+**/*.crt
+**/*.key

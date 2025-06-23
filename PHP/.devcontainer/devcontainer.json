@@ -1,15 +1,14 @@
 {
-  "name": "Symfony Dev Environment",
-  "dockerComposeFile": "../../.devcontainer/docker-compose.symfony.yml",
+  "name": "PHP Dev Environment",
+  "dockerComposeFile": "../../.devcontainer/docker-compose.PHP.yml",
   "service": "php",
   "workspaceFolder": "/workspace",
   "remoteUser": "loic",
   "containerUser": "loic",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
+  "features": {},
   "forwardPorts": [
     8000,
+    443,
     3306
   ],
   "postCreateCommand": "bash post-create.sh",

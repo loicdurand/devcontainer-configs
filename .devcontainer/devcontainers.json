@@ -2,8 +2,8 @@
     "name": "Loïc's Dev Containers",
     "configurations": [
         {
-            "name": "Symfony Dev Environment",
-            "dockerComposeFile": "../.devcontainer/docker-compose.symfony.yml",
+            "name": "PHP Dev Environment",
+            "dockerComposeFile": "../.devcontainer/docker-compose.PHP.yml",
             "service": "php",
             "workspaceFolder": "/workspace"
         }

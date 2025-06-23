@@ -20,6 +20,26 @@ until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
 done
 echo "MariaDB is ready!"
 
+# Adding the "accueil" website
+echo "Installing 'accueil' website dependancies..."
+
+cd accueil
+# Install Node.js dependencies
+npm install || echo "Warning: npm install failed, continuing..."
+echo "Node.js dependencies installed."
+
+# Install PHP dependencies
+composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
+echo "Composer dependencies installed."
+
+# Clear Symfony cache
+php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
+echo "Symfony cache cleared."
+
+cd ..
+echo "'accueil' website is ready!"
+
+
 cat << EOF
 If you are building a traditional web application:
     1. Open a terminal in the container.
