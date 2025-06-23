@@ -35,21 +35,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
+RUN git clone https://github.com/loicdurand/accueil.git
+
 # Configure Apache
-COPY .devcontainer/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY .devcontainer/certs/localhost.crt /etc/ssl/certs/localhost.crt
-COPY .devcontainer/certs/localhost.key /etc/ssl/private/localhost.key
+# COPY .devcontainer/apache2/accueil.conf /etc/apache2/sites-available/accueil.conf
+# COPY .devcontainer/certs/localhost.crt /etc/ssl/certs/localhost.crt
+# COPY .devcontainer/certs/localhost.key /etc/ssl/private/localhost.key
+# RUN a2enmod rewrite headers \
+#     && a2ensite accueil.conf \
+#     && a2dissite 000-default.conf
 
 # Create directories for Apache logs and Symfony
-RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /var/log/apache2
-
+# RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /var/log/apache2
 
 # Create directories for certs, Caddy logs and Symfony
 RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /workspace/accueil/var/log
-
-# COPY .devcontainer/certs/localhost.crt /etc/caddy/certs/localhost.crt
-# COPY .devcontainer/certs/localhost.key /etc/caddy/certs/localhost.key
-# COPY .devcontainer/caddy/Caddyfile /etc/caddy/Caddyfile
 
 # **************************
 # * Create a non root user *
@@ -85,13 +85,11 @@ RUN echo "alias ll='ls -alF'" >> /home/$USERNAME/.bashrc \
 WORKDIR /workspace
 
 # Setting permissions
-RUN chown -R www-data:www-data /workspace
-RUN chmod -R 775 /workspace
-RUN chown -R www-data:www-data /etc/ssl/certs /etc/ssl/private && chmod -R 644 /etc/ssl/certs /etc/ssl/private
-RUN chown -R www-data:www-data /var/log/apache2 && chmod -R 775 /var/log/apache2
+RUN chown -R www-data:www-data /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private \
+    && chmod -R 775 /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private
 
 # Exposing ports for Apache
 EXPOSE 8000 443
 
 # Start Apache in foreground
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+#CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

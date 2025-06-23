@@ -24,6 +24,7 @@ echo "MariaDB is ready!"
 echo "Installing 'accueil' website dependancies..."
 
 cd accueil
+
 # Install Node.js dependencies
 npm install || echo "Warning: npm install failed, continuing..."
 echo "Node.js dependencies installed."
@@ -32,13 +33,31 @@ echo "Node.js dependencies installed."
 composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
 echo "Composer dependencies installed."
 
+#php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
+
+# composer require symfony/runtime || echo "Warning: Composer require symfony/runtime failed, continuing..."
+# composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
+composer dump-env dev
+
+# Set up 'accueil' database
+mysql -h mysql -u root -pmariadb -e "\
+    CREATE DATABASE accueil;
+    GRANT ALL PRIVILEGES ON accueil.* TO mariadb IDENTIFIED BY 'mariadb';\
+    " 2>/dev/null
+php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
+php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
+echo "Database 'accueil' is ready!"
+
 # Clear Symfony cache
 php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
 echo "Symfony cache cleared."
+npm run dev || echo "Warning: npm run dev failed, continuing..."
+symfony serve --no-tls --listen-ip=0.0.0.0 -d || echo "Warning: Symfony server start failed, continuing..."
 
 cd ..
 echo "'accueil' website is ready!"
 
+# apache2ctl restart
 
 cat << EOF
 If you are building a traditional web application:
