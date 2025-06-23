@@ -35,21 +35,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
-RUN git clone https://github.com/loicdurand/accueil.git
-
-# Configure Apache
-# COPY .devcontainer/apache2/accueil.conf /etc/apache2/sites-available/accueil.conf
-# COPY .devcontainer/certs/localhost.crt /etc/ssl/certs/localhost.crt
-# COPY .devcontainer/certs/localhost.key /etc/ssl/private/localhost.key
-# RUN a2enmod rewrite headers \
-#     && a2ensite accueil.conf \
-#     && a2dissite 000-default.conf
-
-# Create directories for Apache logs and Symfony
-# RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /var/log/apache2
+# RUN git clone https://github.com/loicdurand/accueil.git
 
 # Create directories for certs, Caddy logs and Symfony
 RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /workspace/accueil/var/log
+RUN mkdir -p /workspace/resa/var/cache /workspace/resa/var/log /workspace/resa/var/log
+
 
 # **************************
 # * Create a non root user *
