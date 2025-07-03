@@ -11,7 +11,6 @@ RUN apt-get update && \
     libicu-dev \
     libpq-dev \
     default-mysql-client \
-    apache2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -37,7 +36,7 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
 
 # RUN git clone https://github.com/loicdurand/accueil.git
 
-# Create directories for certs, Caddy logs and Symfony
+# Create directories for Symfony
 RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /workspace/accueil/var/log
 RUN mkdir -p /workspace/resa/var/cache /workspace/resa/var/log /workspace/resa/var/log
 

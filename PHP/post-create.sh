@@ -6,7 +6,7 @@ echo "Starting post-create setup at $(date)"
 # exec &> /workspace/post-create.log
 
 # Wait for MariaDB to be ready
-echo "DB connection check: mysql -h mysql -u mariadb -pmariadb mariadb -e 'SELECT 1'"
+echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"
 MAX_ATTEMPTS=30
 ATTEMPT=1
 until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
