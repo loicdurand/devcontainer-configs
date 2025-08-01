@@ -36,11 +36,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Android command-line tools (step-by-step)
-RUN mkdir -p /opt/android/cmdline-tools
-RUN cd /opt/android && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
-RUN cd /opt/android && unzip cmdline-tools.zip
-RUN rm /opt/android/cmdline-tools.zip
-RUN mv /opt/android/cmdline-tools /opt/android/cmdline-tools/latest
+RUN mkdir -p /opt/android/cmdline-tools/latest
+RUN cd /opt/android/cmdline-tools/latest && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+RUN cd /opt/android/cmdline-tools/latest && unzip cmdline-tools.zip
+RUN rm /opt/android/cmdline-tools/latest/cmdline-tools.zip
 RUN chown -R root:root /opt/android && chmod -R 755 /opt/android
 
 # Set environment variables for Android
