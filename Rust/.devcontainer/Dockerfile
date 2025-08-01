@@ -35,25 +35,28 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Android command-line tools
-RUN mkdir -p /opt/android/cmdline-tools && \
-    cd /opt/android && \
-    wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip && \
-    unzip cmdline-tools.zip && \
-    rm cmdline-tools.zip && \
-    mv cmdline-tools /opt/android/cmdline-tools/latest
+# Install Android command-line tools (step-by-step)
+RUN mkdir -p /opt/android/cmdline-tools
+RUN cd /opt/android && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+RUN cd /opt/android && unzip cmdline-tools.zip
+RUN rm /opt/android/cmdline-tools.zip
+RUN mv /opt/android/cmdline-tools /opt/android/cmdline-tools/latest
+RUN chown -R root:root /opt/android && chmod -R 755 /opt/android
 
 # Set environment variables for Android
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV ANDROID_HOME=/opt/android
-ENV NDK_HOME=$ANDROID_HOME/ndk/25.0.8775105
+ENV NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125
 ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
+# Accept Android SDK licenses
+RUN yes | /opt/android/cmdline-tools/latest/bin/sdkmanager --licenses
+
 # Install Android SDK and NDK components
-RUN yes | /opt/android/cmdline-tools/latest/bin/sdkmanager \
+RUN /opt/android/cmdline-tools/latest/bin/sdkmanager \
     "platforms;android-33" \
     "platform-tools" \
-    "ndk;25.0.8775105" \
+    "ndk;26.1.10909125" \
     "build-tools;33.0.0"
 
 # Install Rust targets for Android
