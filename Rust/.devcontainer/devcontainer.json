@@ -1,0 +1,19 @@
+{
+    "name": "Rust Dev Environment",
+    "dockerComposeFile": "../../.devcontainer/docker-compose.Rust.yml",
+    "service": "rust",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "tamasfe.even-better-toml",
+                "vadimcn.vscode-lldb"
+            ],
+            "settings": {
+                "rust-analyzer.checkOnSave.command": "clippy"
+            }
+        }
+    },
+    "remoteUser": "loic"
+}

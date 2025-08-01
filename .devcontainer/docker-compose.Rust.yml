@@ -1,0 +1,41 @@
+services:
+  rust:
+    build:
+      context: ../Rust/.devcontainer
+      dockerfile: Dockerfile
+    volumes:
+      - ../Rust:/workspace:cached
+    command: sleep infinity
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    # environment:
+    #   - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
+    user: loic
+#     networks:
+#       - rust-network
+
+#   mysql:
+#     image: mysql:8.0
+#     environment:
+#       MYSQL_ROOT_PASSWORD: mariadb
+#       MYSQL_USER: mariadb
+#       MYSQL_PASSWORD: mariadb
+#     ports:
+#       - "3307:3306"
+#     volumes:
+#       - rust-mysql-data:/var/lib/mysql
+#     healthcheck:
+#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mariadb", "-pmariadb"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 10
+#     networks:
+#       - rust-network
+
+# volumes:
+#   rust-mysql-data:
+
+# networks:
+#   rust-network:
+#     driver: bridge

@@ -6,6 +6,12 @@
             "dockerComposeFile": "../.devcontainer/docker-compose.PHP.yml",
             "service": "php",
             "workspaceFolder": "/workspace"
+        },
+        {
+            "name": "Rust Dev Environment",
+            "dockerComposeFile": "../.devcontainer/docker-compose.Rust.yml",
+            "service": "rust",
+            "workspaceFolder": "/workspace"
         }
     ]
 }
