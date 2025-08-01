@@ -5,21 +5,6 @@ echo "Starting post-create setup at $(date)"
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 
-# Wait for MariaDB to be ready
-echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"
-MAX_ATTEMPTS=30
-ATTEMPT=1
-until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
-    echo "Waiting for MariaDB to be ready... (Attempt $ATTEMPT/$MAX_ATTEMPTS)"
-    if [ $ATTEMPT -ge $MAX_ATTEMPTS ]; then
-        echo "Error: MariaDB did not become ready in time. Exiting."
-        exit 1
-    fi
-    sleep 2
-    ((ATTEMPT++))
-done
-echo "MariaDB is ready!"
-
 for app in {"accueil","resa"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
@@ -57,6 +42,21 @@ for app in {"accueil","resa"}; do
         echo "Directory $app does not exist. Skipping setup for $app."
     fi
 done
+
+# Wait for MariaDB to be ready
+# echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"
+# MAX_ATTEMPTS=30
+# ATTEMPT=1
+# until mysql -h mysql -u mariadb -pmariadb mariadb -e "SELECT 1" 2>/dev/null; do
+#     echo "Waiting for MariaDB to be ready... (Attempt $ATTEMPT/$MAX_ATTEMPTS)"
+#     if [ $ATTEMPT -ge $MAX_ATTEMPTS ]; then
+#         echo "Error: MariaDB did not become ready in time. Exiting."
+#         exit 1
+#     fi
+#     sleep 2
+#     ((ATTEMPT++))
+# done
+# echo "MariaDB is ready!"
 
 cat << EOF
 When ready, serve the application with:
