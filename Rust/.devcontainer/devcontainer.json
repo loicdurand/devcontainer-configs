@@ -15,5 +15,7 @@
             }
         }
     },
-    "remoteUser": "loic"
+    "remoteUser": "loic",
+    "postCreateCommand": "bash post-create.sh"
+
 }

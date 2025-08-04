@@ -35,18 +35,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Android command-line tools (step-by-step)
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH=$PATH:$JAVA_HOME/bin
+
 RUN mkdir -p /opt/android/cmdline-tools/latest
 RUN cd /opt/android/cmdline-tools/latest && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
 RUN cd /opt/android/cmdline-tools/latest && unzip cmdline-tools.zip
 RUN rm /opt/android/cmdline-tools/latest/cmdline-tools.zip
-RUN chown -R root:root /opt/android && chmod -R 755 /opt/android
+RUN mv /opt/android/cmdline-tools/latest/cmdline-tools/* /opt/android/cmdline-tools/latest/
+RUN rmdir /opt/android/cmdline-tools/latest/cmdline-tools/
 
-# Set environment variables for Android
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV ANDROID_HOME=/opt/android
-ENV NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125
-ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
 # Accept Android SDK licenses
 RUN yes | /opt/android/cmdline-tools/latest/bin/sdkmanager --licenses
@@ -62,7 +62,8 @@ RUN /opt/android/cmdline-tools/latest/bin/sdkmanager \
 RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
 # Install Tauri CLI
-RUN cargo install tauri-cli --version "^2.0.0-beta"
+RUN cargo install create-tauri-app --locked
+#cargo install tauri-cli --version "^2.0.0-beta"
 
 # Create directories for Rust project
 RUN mkdir -p /workspace
@@ -103,3 +104,5 @@ RUN chmod -R 775 /workspace
 
 # Expose port for Rust/Tauri application
 EXPOSE 8080
+
+CMD ["/bin/bash"]

@@ -29,7 +29,7 @@ for app in {"accueil","resa"}; do
             " 2>/dev/null
         php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
         php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
-        echo "Database 'accueil' is ready!"
+        echo "Database '$app' is ready!"
 
         # Clear Symfony cache
         php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
@@ -37,7 +37,7 @@ for app in {"accueil","resa"}; do
         npm run dev || echo "Warning: npm run dev failed, continuing..."
 
         cd ..
-        echo "'accueil' website is ready!"
+        echo "'$app' website is ready!"
     else
         echo "Directory $app does not exist. Skipping setup for $app."
     fi
