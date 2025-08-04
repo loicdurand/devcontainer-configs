@@ -10,7 +10,6 @@
                 "wix.vscode-import-cost",
                 "yzhang.markdown-all-in-one",
                 "meganrogge.template-string-converter",
-                "rust-lang.rust",
                 "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
