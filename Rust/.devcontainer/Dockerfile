@@ -105,4 +105,4 @@ RUN chmod -R 775 /workspace
 # Expose port for Rust/Tauri application
 EXPOSE 8080
 
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]

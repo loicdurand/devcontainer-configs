@@ -6,6 +6,11 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "xabikos.JavaScriptSnippets",
+                "wix.vscode-import-cost",
+                "yzhang.markdown-all-in-one",
+                "meganrogge.template-string-converter",
+                "rust-lang.rust",
                 "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
@@ -18,5 +23,4 @@
     },
     "remoteUser": "loic",
     "postCreateCommand": "bash post-create.sh"
-
 }

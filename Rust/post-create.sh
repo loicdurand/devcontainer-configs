@@ -44,8 +44,8 @@ done
 
 # EOF
 
-# Changement su shell
-#/bin/bash
+# Changement du shell
+/bin/bash
 
 echo "Post-create setup completed at $(date)"
 exit 0
