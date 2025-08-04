@@ -1,0 +1,9 @@
+[submodule "PHP/accueil"]
+	path = PHP/accueil
+	url = https://github.com/loicdurand/accueil.git
+[submodule "PHP/resa"]
+	path = PHP/resa
+	url = https://github.com/loicdurand/resa.git
+[submodule "Rust/pwiz-gui"]
+	path = Rust/pwiz-gui
+	url = https://github.com/loicdurand/pwiz-gui.git

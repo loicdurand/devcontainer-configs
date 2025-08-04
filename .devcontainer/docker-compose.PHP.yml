@@ -1,23 +1,24 @@
 services:
   php:
     build:
-      context: .
-      dockerfile: ../symfony/.devcontainer/Dockerfile
+      context: ../PHP
+      dockerfile: ../PHP/.devcontainer/Dockerfile
     volumes:
-      - ../symfony:/workspace:cached
+      - ../PHP:/workspace:cached
     command: sleep infinity
     ports:
       - "8000:8000"
+      - "443:443"
     depends_on:
       - mysql
-    environment:
-      - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
+    # environment:
+    #   - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
 
   mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: mariadb
-      MYSQL_DATABASE: mariadb
+      # MYSQL_DATABASE: mariadb
       MYSQL_USER: mariadb
       MYSQL_PASSWORD: mariadb
     ports:
@@ -30,7 +31,7 @@ services:
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: mysql
-      PMA_USER: mariadb
+      PMA_USER: root
       PMA_PASSWORD: mariadb
       UPLOAD_LIMIT: 20M
     ports:

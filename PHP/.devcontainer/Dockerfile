@@ -1,15 +1,19 @@
-FROM php:8.2-fpm
+FROM php:8.3-apache
 
 # Installing system dependencies
 RUN apt-get update && \
     apt-get install -y \
+    sudo \
     git \
     unzip \
     nano \
     libzip-dev \
     libicu-dev \
     libpq-dev \
-    default-mysql-client
+    default-mysql-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN docker-php-ext-install \
     pdo_mysql \
     zip \
@@ -21,7 +25,7 @@ RUN docker-php-ext-install \
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get update \
     && apt-get install -y nodejs \
-    && npm install -g npm@latest
+    && npm install -g npm@latest 
 
 # Installing Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -29,6 +33,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Installing Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
+# RUN git clone https://github.com/loicdurand/accueil.git
+
+# Create directories for Symfony
+RUN mkdir -p /workspace/accueil/var/cache /workspace/accueil/var/log /workspace/accueil/var/log
+RUN mkdir -p /workspace/resa/var/cache /workspace/resa/var/log /workspace/resa/var/log
+
 
 # **************************
 # * Create a non root user *
@@ -41,10 +52,7 @@ ARG USER_GID=$USER_UID
 # Create the user
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    #
     # Add sudo support. Omit if you don't need to install software after connecting.
-    && apt-get update \
-    && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     # Add user to sudo & www-data groups
@@ -67,8 +75,11 @@ RUN echo "alias ll='ls -alF'" >> /home/$USERNAME/.bashrc \
 WORKDIR /workspace
 
 # Setting permissions
-RUN chown -R www-data:www-data /workspace
-RUN chmod -R 775 /workspace
+RUN chown -R www-data:www-data /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private \
+    && chmod -R 775 /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private
 
-# Exposing port for Symfony dev server
-EXPOSE 8000
+# Exposing ports for Apache
+EXPOSE 8000 443
+
+# Start Apache in foreground
+#CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
