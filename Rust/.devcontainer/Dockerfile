@@ -100,6 +100,7 @@ WORKDIR /workspace
 
 # Set permissions
 RUN chown -R $USERNAME:$USERNAME /workspace
+RUN chown -R $USERNAME:$USERNAME /usr/local/cargo
 RUN chmod -R 775 /workspace
 
 # Expose port for Rust/Tauri application
