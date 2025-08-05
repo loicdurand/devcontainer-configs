@@ -23,7 +23,8 @@
         "jinxdash.prettier-rust",
         "clarkyu.vscode-sql-beautify",
         "meganrogge.template-string-converter",
-        "mblode.twig-language-2"
+        "mblode.twig-language-2",
+        "TheNouillet.symfony-vscode"
       ],
       "settings": {
         "php.executablePath": "/usr/local/bin/php",
