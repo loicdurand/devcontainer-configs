@@ -30,6 +30,13 @@
         "php.validate.executablePath": "/usr/local/bin/php",
         "editor.formatOnSave": true,
         "editor.fontSize": 18,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "icon": "terminal-bash"
+          }
+        },
         "intelephense.files.exclude": [
           "**/.git/**",
           "**/.svn/**",
