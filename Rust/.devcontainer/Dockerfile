@@ -63,7 +63,7 @@ RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-a
 
 # Install Tauri CLI
 RUN cargo install create-tauri-app --locked
-#cargo install tauri-cli --version "^2.0.0-beta"
+RUN cargo install cargo-watch
 
 # Create directories for Rust project
 RUN mkdir -p /workspace
