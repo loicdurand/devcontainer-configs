@@ -1,9 +1,9 @@
 FROM rust:1.82-slim-bookworm
 
 # Update package sources to include contrib and non-free
-RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list
+# RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
+#     echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list && \
+#     echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list
 
 # Install system dependencies
 RUN apt-get update && \
@@ -23,6 +23,7 @@ RUN apt-get update && \
     libayatana-appindicator3-dev \
     librsvg2-dev \
     libclang-dev \
+    clang \
     # Dépendances pour Android
     openjdk-17-jdk \
     && apt-get clean \
@@ -36,6 +37,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+ENV LIBCLANG_PATH=/usr/local/lib
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
