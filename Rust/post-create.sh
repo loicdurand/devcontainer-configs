@@ -5,24 +5,28 @@ echo "Starting post-create setup at $(date)"
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 app="pwiz-gui"
-# for app in {"pwiz-gui"}; do
+for app in {"pwiz-gui","skoop"}; do
+    
     # Check if the directory exists
-    # echo $(ls -al)
-    # if [ -d "$app" ]; then
+    if [ -d "$app" ]; then
 
-        echo "Installing $app website dependancies..."
+        echo "Installing $app node modules..."
 
-        cd $app
+        cd $app/src
         npm install
-        cd ./src-tauri
+
+        echo "Installing $app cargo crates..."
+
+        cd ../src-tauri
         cargo build
         cd ../..
 
         echo "'$app' website is ready!"
-    # else
-    #     echo "Directory $app does not exist. Skipping setup for $app."
-    # fi
-# done
+    else
+         echo "Directory $app does not exist. Skipping setup for $app."
+    fi
+
+done
 
 # Wait for MariaDB to be ready
 # echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"

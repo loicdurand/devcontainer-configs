@@ -7,3 +7,6 @@
 [submodule "Rust/pwiz-gui"]
 	path = Rust/pwiz-gui
 	url = https://github.com/loicdurand/pwiz-gui.git
+[submodule "Rust/skoop"]
+	path = Rust/skoop
+	url = https://github.com/loicdurand/skoop.git
