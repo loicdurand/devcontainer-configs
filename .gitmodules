@@ -10,3 +10,6 @@
 [submodule "Rust/skoop"]
 	path = Rust/skoop
 	url = https://github.com/loicdurand/skoop.git
+[submodule "Rust/pwiz-web"]
+	path = Rust/pwiz-web
+	url = https://github.com/loicdurand/pwiz-web.git
