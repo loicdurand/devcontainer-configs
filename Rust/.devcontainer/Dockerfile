@@ -22,6 +22,7 @@ RUN apt-get update && \
     libssl-dev \
     libayatana-appindicator3-dev \
     librsvg2-dev \
+    libclang-dev \
     # Dépendances pour Android
     openjdk-17-jdk \
     && apt-get clean \
