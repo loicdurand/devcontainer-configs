@@ -7,9 +7,12 @@
 [submodule "Rust/pwiz-gui"]
 	path = Rust/pwiz-gui
 	url = https://github.com/loicdurand/pwiz-gui.git
-[submodule "Rust/skoop"]
-	path = Rust/skoop
-	url = https://github.com/loicdurand/skoop.git
 [submodule "Rust/pwiz-web"]
 	path = Rust/pwiz-web
 	url = https://github.com/loicdurand/pwiz-web.git
+[submodule "Rust/skoop"]
+	path = Rust/skoop
+	url = https://github.com/loicdurand/skoop.git
+[submodule "PHP/tomomi"]
+	path = PHP/tomomi
+	url = https://github.com/loicdurand/tomomi.git
