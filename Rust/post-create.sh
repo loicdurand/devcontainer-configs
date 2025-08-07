@@ -2,6 +2,9 @@
 
 echo "Starting post-create setup at $(date)"
 
+# Utilisation de la version stable de Rust
+rustup default stable
+
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 app="pwiz-gui"
@@ -15,11 +18,11 @@ for app in {"pwiz-gui","skoop"}; do
         cd $app/src
         npm install
 
-        echo "Installing $app cargo crates..."
+        # echo "Installing $app cargo crates..."
 
-        cd ../src-tauri
-        cargo build
-        cd ../..
+        # cd ../src-tauri
+        # cargo build
+        # cd ../..
 
         echo "'$app' website is ready!"
     else
