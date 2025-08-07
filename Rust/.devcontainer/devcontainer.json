@@ -13,7 +13,8 @@
                 "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
-                "tauri-apps.tauri-vscode"
+                "tauri-apps.tauri-vscode",
+                "mblode.twig-language-2"
             ],
             "settings": {
                 "rust-analyzer.checkOnSave.command": "clippy",
@@ -23,6 +24,11 @@
                     "bash": {
                         "path": "/bin/bash",
                         "icon": "terminal-bash"
+                    }
+                },
+                "files": {
+                    "associations": {
+                        "*.tera": "twig"
                     }
                 }
             }
