@@ -1,5 +1,5 @@
 {
-    "name": "Rust Dev Environment",
+    "name": "Rust Dev Container",
     "dockerComposeFile": "../../.devcontainer/docker-compose.Rust.yml",
     "service": "rust",
     "workspaceFolder": "/workspace",
@@ -14,7 +14,8 @@
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
                 "tauri-apps.tauri-vscode",
-                "mblode.twig-language-2"
+                "mblode.twig-language-2",
+                "jinxdash.prettier-rust"
             ],
             "settings": {
                 "rust-analyzer.checkOnSave.command": "clippy",
@@ -30,6 +31,10 @@
                     "associations": {
                         "*.tera": "twig"
                     }
+                },
+                "emmet.includeLanguages": {
+                    "twig": "html",
+                    "tera": "html"
                 }
             }
         }

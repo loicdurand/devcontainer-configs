@@ -2,15 +2,19 @@
     "name": "Loïc's Dev Containers",
     "configurations": [
         {
-            "name": "PHP Dev Environment",
+            "name": "PHP Dev Container",
             "dockerComposeFile": "../.devcontainer/docker-compose.PHP.yml",
             "service": "php",
             "workspaceFolder": "/workspace"
         },
         {
-            "name": "Rust Dev Environment",
+            "name": "Rust Dev Container",
             "dockerComposeFile": "../.devcontainer/docker-compose.Rust.yml",
             "service": "rust",
+            "workspaceFolder": "/workspace"
+        },
+        {
+            "name": "Flutter Dev Container",
             "workspaceFolder": "/workspace"
         }
     ]

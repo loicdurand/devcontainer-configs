@@ -1,5 +1,5 @@
 {
-  "name": "PHP Dev Environment",
+  "name": "PHP Dev Container",
   "dockerComposeFile": "../../.devcontainer/docker-compose.PHP.yml",
   "service": "php",
   "workspaceFolder": "/workspace",
@@ -36,6 +36,10 @@
             "path": "/bin/bash",
             "icon": "terminal-bash"
           }
+        },
+        "emmet.includeLanguages": {
+          "twig": "html",
+          "tera": "html"
         },
         "intelephense.files.exclude": [
           "**/.git/**",
