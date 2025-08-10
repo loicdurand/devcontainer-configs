@@ -14,7 +14,7 @@
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
                 "tauri-apps.tauri-vscode",
-                "mblode.twig-language-2",
+                "karunamurti.tera",
                 "jinxdash.prettier-rust"
             ],
             "settings": {
