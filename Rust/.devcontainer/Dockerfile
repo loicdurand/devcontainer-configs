@@ -1,4 +1,4 @@
-FROM rust:1.82-slim-bookworm
+FROM rust:slim-bookworm
 
 # Update package sources to include contrib and non-free
 # RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
@@ -24,9 +24,9 @@ RUN apt-get update && \
     librsvg2-dev \
     libclang-dev \
     clang \
-    librocksdb-dev \
+    # librocksdb-dev \
     # Dépendances pour Android
-    openjdk-17-jdk \
+    # openjdk-17-jdk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -68,8 +68,10 @@ ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 # RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
 # Install Tauri CLI
-RUN cargo install create-tauri-app --locked
-RUN cargo install cargo-watch
+# RUN cargo install create-tauri-app --locked
+# RUN cargo install cargo-watch
+# Utilisation de la version stable de Rust
+RUN rustup default stable
 
 # Create directories for Rust project
 RUN mkdir -p /workspace
