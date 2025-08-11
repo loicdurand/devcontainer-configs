@@ -15,7 +15,7 @@
                 "vadimcn.vscode-lldb",
                 "tauri-apps.tauri-vscode",
                 "karunamurti.tera",
-                "jinxdash.prettier-rust"
+                "rust-lang.rust-analyzer"
             ],
             "settings": {
                 "rust-analyzer.checkOnSave.command": "clippy",

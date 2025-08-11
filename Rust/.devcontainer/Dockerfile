@@ -37,7 +37,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV LIBCLANG_PATH=/usr/local/lib
+ENV LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 

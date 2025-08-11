@@ -8,34 +8,26 @@ services:
     command: sleep infinity
     user: loic
     depends_on:
-      db:
-        condition: service_healthy
+      mailhog:
+        condition: service_started
     environment:
-      - DATABASE_URL=mysql://mariadb:mariadb@db:3306/mariadb?serverVersion=8.0
+      - LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - SMTP_USER=
+      - SMTP_PASS=
+      - FROM_EMAIL=loicdurand.ld@gmail.com
+      - JWT_SECRET=skoop_secret
     networks:
       - rust-network
 
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: mariadb
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariadb
-      MYSQL_PASSWORD: mariadb
+  mailhog:
+    image: mailhog/mailhog:latest
     ports:
-      - "3307:3306"
-    volumes:
-      - rust-mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mariadb", "-pmariadb"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      - "8025:8025" # Interface web accessible sur localhost:8025
+      - "1025:1025" # Port SMTP pour l'envoi d'emails
     networks:
       - rust-network
-
-volumes:
-  rust-mysql-data:
 
 networks:
   rust-network:
