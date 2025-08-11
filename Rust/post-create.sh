@@ -4,7 +4,7 @@ echo "Starting post-create setup at $(date)"
 
 # Utilisation de la version stable de Rust
 rustup default stable
-cargo install sccache
+# cargo install sccache
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
@@ -17,7 +17,6 @@ app="skoop"
         echo "Installing $app node modules..."
 
         cd $app
-        npm run sccache
         cd /src
         npm install
 

@@ -24,7 +24,7 @@ RUN apt-get update && \
     librsvg2-dev \
     libclang-dev \
     clang \
-    # librocksdb-dev \
+    librocksdb-dev \
     # Dépendances pour Android
     openjdk-17-jdk \
     && apt-get clean \
@@ -39,8 +39,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 ENV LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu
-# ENV ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
-# ENV ROCKSDB_INCLUDE_DIR=/usr/include
+ENV ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
+ENV ROCKSDB_INCLUDE_DIR=/usr/include
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
