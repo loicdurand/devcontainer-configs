@@ -8,15 +8,17 @@ cargo install sccache
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
-app="pwiz-gui"
-for app in {"pwiz-gui","skoop"}; do
+app="skoop"
+# for app in {"pwiz-gui","skoop"}; do
     
     # Check if the directory exists
     if [ -d "$app" ]; then
 
         echo "Installing $app node modules..."
 
-        cd $app/src
+        cd $app
+        npm run sccache
+        cd /src
         npm install
 
         # echo "Installing $app cargo crates..."
@@ -30,7 +32,7 @@ for app in {"pwiz-gui","skoop"}; do
          echo "Directory $app does not exist. Skipping setup for $app."
     fi
 
-done
+# done
 
 # Wait for MariaDB to be ready
 # echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"

@@ -12,8 +12,8 @@ services:
         condition: service_started
     environment:
       - LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu
-      - ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
-      - ROCKSDB_INCLUDE_DIR=/usr/include/rocksdb
+      # - ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
+      # - ROCKSDB_INCLUDE_DIR=/usr/include
       - SMTP_HOST=mailhog
       - SMTP_PORT=1025
       - SMTP_USER=
