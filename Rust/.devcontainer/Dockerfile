@@ -20,6 +20,8 @@ RUN apt-get update && \
     file \
     libxdo-dev \
     libssl-dev \
+    pkg-config \ 
+    libsqlite3-dev \
     libayatana-appindicator3-dev \
     librsvg2-dev \
     libclang-dev \
@@ -67,11 +69,13 @@ ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 # Install Rust targets for Android
 # RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
-# Install Tauri CLI
-# RUN cargo install create-tauri-app --locked
-# RUN cargo install cargo-watch
 # Utilisation de la version stable de Rust
 RUN rustup default stable
+
+# Install Tauri CLI
+# RUN cargo install create-tauri-app --locked
+
+RUN cargo install cargo-watch
 
 # Create directories for Rust project
 RUN mkdir -p /workspace
