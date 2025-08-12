@@ -15,7 +15,9 @@
                 "vadimcn.vscode-lldb",
                 "tauri-apps.tauri-vscode",
                 "karunamurti.tera",
-                "rust-lang.rust-analyzer"
+                "rust-lang.rust-analyzer",
+                "mblode.twig-language-2",
+                "serhatkaya.twig-formatter"
             ],
             "settings": {
                 "editor.fontSize": 18,
