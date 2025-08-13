@@ -1,15 +1,12 @@
-FROM rust:slim-bookworm
+FROM rust:1.89-slim-bookworm
 
-# Update package sources to include contrib and non-free
-# RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
-#     echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free" >> /etc/apt/sources.list && \
-#     echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list
-
-# Install system dependencies
+# Ensure all packages are updated to their latest secure versions and mitigate vulnerabilities
 RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install --only-upgrade -y openssl libssl-dev && \
+    # Install system dependencies
     apt-get install -y \
     sudo \
-    git \
     unzip \
     default-mysql-client \
     # Dépendances pour Tauri
@@ -19,7 +16,6 @@ RUN apt-get update && \
     wget \
     file \
     libxdo-dev \
-    libssl-dev \
     pkg-config \ 
     libsqlite3-dev \
     libayatana-appindicator3-dev \

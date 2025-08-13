@@ -5,6 +5,12 @@
     "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
+            "features": {
+                "git":{
+                    "version": "latest",
+                    "installFrom":"apt"
+                }
+            },
             "extensions": [
                 "xabikos.JavaScriptSnippets",
                 "wix.vscode-import-cost",
