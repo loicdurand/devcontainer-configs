@@ -1,10 +1,10 @@
 services:
   skoop:
     build:
-      context: ../Skoop/.devcontainer
+      context: ../skoop/.devcontainer
       dockerfile: Dockerfile
     volumes:
-      - ../Skoop:/workspace:cached
+      - ../skoop:/workspace:cached
     command: sleep infinity
     user: loic
     depends_on:
