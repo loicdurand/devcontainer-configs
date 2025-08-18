@@ -74,7 +74,7 @@ RUN rustup default stable
 RUN cargo install cargo-watch
 
 # Create directories for Rust project
-# RUN mkdir -p /skoop
+# RUN mkdir -p /workspace
 
 # Create non-root user
 ARG USERNAME=loic
@@ -104,12 +104,12 @@ RUN echo "alias ll='ls -alF'" >> /home/$USERNAME/.bashrc \
     && source /home/$USERNAME/.bashrc
 
 # Set working directory
-WORKDIR /skoop
+WORKDIR /workspace
 
 # Set permissions
-RUN chown -R $USERNAME:$USERNAME /skoop
+RUN chown -R $USERNAME:$USERNAME /workspace
 RUN chown -R $USERNAME:$USERNAME /usr/local/cargo
-RUN chmod -R 775 /skoop
+RUN chmod -R 775 /workspace
 
 # Expose port for Rust/Tauri application
 EXPOSE 8080

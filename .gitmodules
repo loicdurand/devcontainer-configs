@@ -13,3 +13,6 @@
 [submodule "PHP/tomomi"]
 	path = PHP/tomomi
 	url = https://github.com/loicdurand/tomomi.git
+[submodule "Skoop/workspace"]
+	path = Skoop/workspace
+	url = https://github.com/loicdurand/skoop.git

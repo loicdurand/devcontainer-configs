@@ -22,9 +22,9 @@ RUN apt-get update && \
     librsvg2-dev \
     libclang-dev \
     clang \
-    # librocksdb-dev \
+    librocksdb-dev \
     # Dépendances pour Android
-    # openjdk-17-jdk \
+    openjdk-17-jdk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -42,34 +42,34 @@ ENV ROCKSDB_INCLUDE_DIR=/usr/include
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
-# RUN mkdir -p /opt/android/cmdline-tools/latest
-# RUN cd /opt/android/cmdline-tools/latest && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
-# RUN cd /opt/android/cmdline-tools/latest && unzip cmdline-tools.zip
-# RUN rm /opt/android/cmdline-tools/latest/cmdline-tools.zip
-# RUN mv /opt/android/cmdline-tools/latest/cmdline-tools/* /opt/android/cmdline-tools/latest/
-# RUN rmdir /opt/android/cmdline-tools/latest/cmdline-tools/
+RUN mkdir -p /opt/android/cmdline-tools/latest
+RUN cd /opt/android/cmdline-tools/latest && wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+RUN cd /opt/android/cmdline-tools/latest && unzip cmdline-tools.zip
+RUN rm /opt/android/cmdline-tools/latest/cmdline-tools.zip
+RUN mv /opt/android/cmdline-tools/latest/cmdline-tools/* /opt/android/cmdline-tools/latest/
+RUN rmdir /opt/android/cmdline-tools/latest/cmdline-tools/
 
 ENV ANDROID_HOME=/opt/android
 ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
 # Accept Android SDK licenses
-# RUN yes | /opt/android/cmdline-tools/latest/bin/sdkmanager --licenses
+RUN yes | /opt/android/cmdline-tools/latest/bin/sdkmanager --licenses
 
 # Install Android SDK and NDK components
-# RUN /opt/android/cmdline-tools/latest/bin/sdkmanager \
-#     "platforms;android-33" \
-#     "platform-tools" \
-#     "ndk;26.1.10909125" \
-#     "build-tools;33.0.0"
+RUN /opt/android/cmdline-tools/latest/bin/sdkmanager \
+    "platforms;android-33" \
+    "platform-tools" \
+    "ndk;26.1.10909125" \
+    "build-tools;33.0.0"
 
 # Install Rust targets for Android
-# RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
 # Utilisation de la version stable de Rust
 RUN rustup default stable
 
 # Install Tauri CLI
-# RUN cargo install create-tauri-app --locked
+RUN cargo install create-tauri-app --locked
 
 RUN cargo install cargo-watch
 
