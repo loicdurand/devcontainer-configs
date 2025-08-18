@@ -27,7 +27,7 @@ for app in {"pwiz-gui","pwiz-web"}; do
          echo "Directory $app does not exist. Skipping setup for $app."
     fi
 
-# done
+done
 
 # Wait for MariaDB to be ready
 # echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"
