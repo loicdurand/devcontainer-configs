@@ -2,7 +2,7 @@ services:
   skoop:
     build:
       context: ../skoop/.devcontainer
-      dockerfile: Dockerfile
+      dockerfile: ../../skoop/.devcontainer/Dockerfile
     volumes:
       - ../skoop:/workspace:cached
     command: sleep infinity
