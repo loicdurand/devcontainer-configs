@@ -4,8 +4,8 @@ echo "Starting post-create setup at $(date)"
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
-app="skoop"
-# for app in {"pwiz-gui","skoop"}; do
+
+for app in {"pwiz-gui","pwiz-web"}; do
     
     # Check if the directory exists
     if [ -d "$app" ]; then
@@ -13,8 +13,8 @@ app="skoop"
         echo "Installing $app node modules..."
 
         cd $app
-        cd /src
         npm install
+        cd ..
 
         # echo "Installing $app cargo crates..."
 
