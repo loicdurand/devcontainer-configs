@@ -1,7 +1,7 @@
 {
-    "name": "Rust Dev Container",
-    "dockerComposeFile": "../../.devcontainer/docker-compose.Rust.yml",
-    "service": "rust",
+    "name": "Skoop Dev Container",
+    "dockerComposeFile": "../../.devcontainer/docker-compose.Skoop.yml",
+    "service": "skoop",
     "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {

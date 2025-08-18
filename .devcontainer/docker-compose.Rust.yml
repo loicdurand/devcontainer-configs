@@ -7,34 +7,10 @@ services:
       - ../Rust:/workspace:cached
     command: sleep infinity
     user: loic
-    depends_on:
-      mailcrab:
-        condition: service_started
     environment:
       - LIBCLANG_PATH=/usr/lib/x86_64-linux-gnu
-      # - ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
-      # - ROCKSDB_INCLUDE_DIR=/usr/include
-      # - SMTP_HOST=mailhog
-      - SMTP_HOST=mailcrab
-      - SMTP_PORT=1025
-      - SMTP_USER=
-      - SMTP_PASS=
-    networks:
-      - rust-network
-
-  # mailhog:
-  #   image: mailhog/mailhog:latest
-  #   ports:
-  #     - "8025:8025" # Interface web accessible sur localhost:8025
-  #     - "1025:1025" # Port SMTP pour l'envoi d'emails
-  #   networks:
-  #     - rust-network
-
-  mailcrab:
-    image: marlonb/mailcrab:latest
-    ports:
-      - "1080:1080" # Interface web accessible sur localhost:1080
-      - "1025:1025" # Port SMTP pour l'envoi d'emails
+      - ROCKSDB_LIB_DIR=/usr/lib/x86_64-linux-gnu
+      - ROCKSDB_INCLUDE_DIR=/usr/include
     networks:
       - rust-network
 
