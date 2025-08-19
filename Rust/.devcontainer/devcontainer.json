@@ -1,10 +1,16 @@
 {
-    "name": "Rust Dev Environment",
+    "name": "Rust Dev Container",
     "dockerComposeFile": "../../.devcontainer/docker-compose.Rust.yml",
     "service": "rust",
     "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
+            "features": {
+                "git":{
+                    "version": "latest",
+                    "installFrom":"apt"
+                }
+            },
             "extensions": [
                 "xabikos.JavaScriptSnippets",
                 "wix.vscode-import-cost",
@@ -13,10 +19,13 @@
                 "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
-                "tauri-apps.tauri-vscode"
+                "tauri-apps.tauri-vscode",
+                "karunamurti.tera",
+                "rust-lang.rust-analyzer",
+                "mblode.twig-language-2",
+                "serhatkaya.twig-formatter"
             ],
             "settings": {
-                "rust-analyzer.checkOnSave.command": "clippy",
                 "editor.fontSize": 18,
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
@@ -24,6 +33,15 @@
                         "path": "/bin/bash",
                         "icon": "terminal-bash"
                     }
+                },
+                "files": {
+                    "associations": {
+                        "*.tera": "twig"
+                    }
+                },
+                "emmet.includeLanguages": {
+                    "twig": "html",
+                    "tera": "html"
                 }
             }
         }

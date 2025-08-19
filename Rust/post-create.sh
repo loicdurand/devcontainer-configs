@@ -4,22 +4,23 @@ echo "Starting post-create setup at $(date)"
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
-app="pwiz-gui"
-for app in {"pwiz-gui","skoop"}; do
+
+for app in {"pwiz-gui","pwiz-web"}; do
     
     # Check if the directory exists
     if [ -d "$app" ]; then
 
         echo "Installing $app node modules..."
 
-        cd $app/src
+        cd $app
         npm install
+        cd ..
 
-        echo "Installing $app cargo crates..."
+        # echo "Installing $app cargo crates..."
 
-        cd ../src-tauri
-        cargo build
-        cd ../..
+        # cd ../src-tauri
+        # cargo build
+        # cd ../..
 
         echo "'$app' website is ready!"
     else
