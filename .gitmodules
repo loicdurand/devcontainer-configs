@@ -15,4 +15,4 @@
 	url = https://github.com/loicdurand/pwiz-web.git
 [submodule "skoop"]
 	path = skoop
-	url = https://github.com/loicdurand/skoop.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/skoop.git
