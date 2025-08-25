@@ -11,6 +11,7 @@ services:
       - "443:443"
     depends_on:
       - mysql
+      - ldap
     # environment:
     #   - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
 
@@ -40,22 +41,23 @@ services:
       - mysql
 
   ldap:
-    image: bitnami/openldap:2  # Version stable et récente
+    image: osixia/openldap:1.5.0  # Version stable et récente
     container_name: dev-ldap
-    build:
-      context: ../PHP
-      dockerfile: ../PHP/ldap/Dockerfile
+    # build:
+    #   context: ../PHP
+    #   dockerfile: ../PHP/ldap/Dockerfile
     environment:
-      - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=adminpass
-      - LDAP_USERS=john.doe
-      - LDAP_PASSWORDS=password123
-      - LDAP_ROOT=dc=mycompany,dc=com
+        LDAP_ORGANISATION: "MyCompany"
+        LDAP_DOMAIN: "mycompany.com"
+        LDAP_ADMIN_PASSWORD: "adminpass"
+        LDAP_CONFIG_PASSWORD: "configpass"
+        LDAP_TLS: "false"
+        #LDAP_SEED_INTERNAL_LDIF_PATH: /container/service/slapd/assets/*.ldif  # Importe tous les fichiers .ldif
     ports:
       - "389:389"
       - "636:636"
     volumes:
-      - ./ldap-data:/bitnami/openldap
-
+      - ./ldap-data:/var/lib/ldap
+      - ./ldap-config:/etc/ldap/slapd.d
 volumes:
   mysql-data:
