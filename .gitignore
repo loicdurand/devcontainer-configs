@@ -3,3 +3,6 @@
 **/*.crt
 **/*.key
 **/.env
+.devcontainer/ldap-config
+.devcontainer/ldap-data
+PHP/ldap/ldif/0*

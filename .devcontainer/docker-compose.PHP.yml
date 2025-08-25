@@ -39,5 +39,23 @@ services:
     depends_on:
       - mysql
 
+  ldap:
+    image: osixia/openldap:1.5.0  # Version stable et récente
+    container_name: simulated-ldap
+    environment:
+      LDAP_ORGANISATION: "MyCompany"  # Nom de ton organisation (DC)
+      LDAP_DOMAIN: "mycompany.com"    # Domaine LDAP (ex. dc=mycompany,dc=com)
+      LDAP_ADMIN_PASSWORD: "adminpass"  # Mot de passe admin (change-le pour la sécu)
+      LDAP_CONFIG_PASSWORD: "configpass"  # Mot de passe pour la config (optionnel, mais requis)
+      LDAP_TLS: "false"  # Désactive TLS pour simplicité (active-le si besoin avec certs)
+      LDAP_SEED_INTERNAL_LDIF_PATH: /container/service/slapd/assets/*.ldif
+    ports:
+      - "389:389"  # Port LDAP standard (non sécurisé)
+      - "636:636"  # Port LDAPS (sécurisé, si activé)
+    volumes:
+      - ./ldap-data:/var/lib/ldap  # Persiste les données LDAP
+      - ./ldap-config:/etc/ldap/slapd.d  # Persiste la config
+      - ../PHP/ldap/ldif:/container/service/slapd/assets
+
 volumes:
   mysql-data:
