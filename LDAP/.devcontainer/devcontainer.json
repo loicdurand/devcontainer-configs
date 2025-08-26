@@ -1,0 +1,10 @@
+{
+  "name": "LDAP Dev Container",
+  "dockerComposeFile": "docker-compose.devcontainer.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}  // Pour gérer Docker/Compose si besoin
+  },
+  "postCreateCommand": "sudo apt update && sudo apt install -y ldap-utils"  // Installe ldap-utils pour tester
+}
