@@ -1,3 +1,4 @@
+
 services:
   php:
     build:
@@ -38,24 +39,6 @@ services:
       - "80:80"
     depends_on:
       - mysql
-
-  ldap:
-    image: bitnami/openldap:2  # Version stable et récente
-    container_name: dev-ldap
-    build:
-      context: ../PHP
-      dockerfile: ../PHP/ldap/Dockerfile
-    environment:
-      - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=adminpass
-      - LDAP_USERS=john.doe
-      - LDAP_PASSWORDS=password123
-      - LDAP_ROOT=dc=mycompany,dc=com
-    ports:
-      - "389:389"
-      - "636:636"
-    volumes:
-      - ./ldap-data:/bitnami/openldap
-
+    
 volumes:
   mysql-data:
