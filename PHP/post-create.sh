@@ -10,21 +10,21 @@ for app in {"accueil","resa","tomomi","vote"}; do
     if [ -d "$app" ]; then
         echo "Installing $app website dependancies..."
 
-        cd $app
+        cd /workspace/$app
 
         # Install Node.js + Composer dependencies
-        npm install || echo "Warning: npm install failed, continuing..."
-        echo "Node.js dependencies installed."
-        composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
-        echo "Composer dependencies installed."
+        # npm install || echo "Warning: npm install failed, continuing..."
+        # echo "Node.js dependencies installed."
+        # composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
+        # echo "Composer dependencies installed."
 
         #php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
         DATABASE_URL="mysql://root:mariadb@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
-        composer dump-env dev
+        # composer dump-env dev
 
         # Set up 'accueil' database
         mysql -h mysql -u root -pmariadb -e "\
-            CREATE DATABASE $app;
+            CREATE DATABASE IF NOT EXISTS $app;
             GRANT ALL PRIVILEGES ON $app.* TO mariadb IDENTIFIED BY 'mariadb';\
             " 2>/dev/null
         php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
@@ -32,11 +32,10 @@ for app in {"accueil","resa","tomomi","vote"}; do
         echo "Database '$app' is ready!"
 
         # Clear Symfony cache
-        php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
-        echo "Symfony cache cleared."
-        npm run dev || echo "Warning: npm run dev failed, continuing..."
+        # php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
+        # echo "Symfony cache cleared."
+        # npm run dev || echo "Warning: npm run dev failed, continuing..."
 
-        cd ..
         echo "'$app' website is ready!"
     else
         echo "Directory $app does not exist. Skipping setup for $app."

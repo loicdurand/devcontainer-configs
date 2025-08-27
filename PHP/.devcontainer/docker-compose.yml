@@ -2,10 +2,10 @@
 services:
   php:
     build:
-      context: ../PHP
-      dockerfile: ../PHP/.devcontainer/Dockerfile
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
     volumes:
-      - ../PHP:/workspace:cached
+      - ../:/workspace:cached
     command: sleep infinity
     ports:
       - "8000:8000"
@@ -29,6 +29,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro  # Monte les scripts d'init SQL
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -42,27 +43,34 @@ services:
       - "80:80"
     depends_on:
       - mysql
+    networks:
+      - ldap-net
 
   lldap:
     image: lldap/lldap:latest
+    env_file:
+      - .env
     environment:
+      LLDAP_DATABASE_URL: "mysql://mariadb:mariadb@mysql:3306/lldap?serverVersion=8.0"
       LLDAP_LDAP_BASE_DN: "dc=example,dc=org"
-      LLDAP_JWT_SECRET: "CHANGE_THIS_TO_A_RANDOM_STRING"  # Change pour la sécurité
+      LLDAP_JWT_SECRET: ${LLDAP_JWT_SECRET}  # Change pour la sécurité: openssl rand -hex 32
       LLDAP_LDAP_USER_DN: "admin"
-      LLDAP_LDAP_USER_PASS: "adminpass"  # Change pour la sécurité
+      LLDAP_LDAP_USER_PASS: "adminpass"
+      LLDAP_LOG_LEVEL: "debug"  # Pour logs détaillés
     volumes:
-      - ./ldif:/app/data:rw  # Monte les LDIF dans le dossier de données
-      - lldap-data:/data  # Persistance des données
+      - ./ldif:/app/data:rw  # Monte les LDIF
+      # Pas de volume /data car SQLite n'est pas utilisé
     ports:
       - "389:3890"  # LDAP sur 3890 (mappé à 389)
-      - "17170:17170"  # Interface web (optionnelle)
+      - "17170:17170"  # Interface web
+    depends_on:
+      - mysql
     networks:
       - ldap-net
     # test depuis le host: ldapsearch -x -H ldap://localhost:389 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w adminpass -s sub "(objectClass=*)"
     # test depuis contenr: ldapsearch -x -H ldap://lldap:3890 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w adminpass -s sub "(objectClass=*)"
 
 volumes:
-  lldap-data:
   mysql-data:
 
 networks:
