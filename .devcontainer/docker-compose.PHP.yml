@@ -14,11 +14,7 @@ services:
       - ldap-net
     depends_on:
       - mysql
-<<<<<<< HEAD
-      - ldap
-=======
       - lldap
->>>>>>> 2f5bcc5ba225d222793053fdb03f28110bbd118a
     # environment:
     #   - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
 
