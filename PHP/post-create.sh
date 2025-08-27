@@ -8,7 +8,7 @@ echo "Starting post-create setup at $(date)"
 for app in {"accueil","resa","tomomi","vote"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
-        echo "Installing $app website dependancies..."
+        # echo "Installing $app website dependancies..."
 
         cd /workspace/$app
 
@@ -19,7 +19,7 @@ for app in {"accueil","resa","tomomi","vote"}; do
         # echo "Composer dependencies installed."
 
         #php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
-        DATABASE_URL="mysql://root:mariadb@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
+        #DATABASE_URL="mysql://root:mariadb@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
         # composer dump-env dev
 
         # Set up 'accueil' database
@@ -27,8 +27,8 @@ for app in {"accueil","resa","tomomi","vote"}; do
             CREATE DATABASE IF NOT EXISTS $app;
             GRANT ALL PRIVILEGES ON $app.* TO mariadb IDENTIFIED BY 'mariadb';\
             " 2>/dev/null
-        php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
-        php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
+        # php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
+        # php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
         echo "Database '$app' is ready!"
 
         # Clear Symfony cache
