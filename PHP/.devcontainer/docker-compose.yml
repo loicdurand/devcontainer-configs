@@ -20,11 +20,8 @@ services:
 
   mysql:
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: mariadb
-      # MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariadb
-      MYSQL_PASSWORD: mariadb
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
@@ -35,12 +32,8 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: mariadb
-      UPLOAD_LIMIT: 20M
+    env_file:
+      - .env
     ports:
       - "80:80"
     depends_on:
@@ -54,13 +47,6 @@ services:
       dockerfile: Dockerfile.lldap
     env_file:
       - .env
-    environment:
-      LLDAP_DATABASE_URL: "mysql://mariadb:mariadb@mysql:3306/lldap?serverVersion=8.0"
-      LLDAP_LDAP_BASE_DN: "dc=example,dc=org"
-      LLDAP_JWT_SECRET: "CHANGE_THIS_TO_A_RANDOM_STRING" #${LLDAP_JWT_SECRET}  # Change pour la sécurité: openssl rand -hex 32
-      LLDAP_LDAP_USER_DN: "admin"
-      LLDAP_LDAP_USER_PASS: "adminpass"
-      LLDAP_LOG_LEVEL: "debug"  # Pour logs détaillés
     volumes:
       - ./ldif:/app/data:rw  # Monte les LDIF
       - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro  # Script d'entrée

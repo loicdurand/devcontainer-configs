@@ -2,6 +2,14 @@
 
 echo "Starting post-create setup at $(date)"
 
+# Charger le fichier .env
+if [ -f ".devcontainer/.env" ]; then
+  export $(grep -v '^#' .env | xargs)
+else
+  echo "Erreur : Fichier .env introuvable dans le répertoire courant."
+  exit 1
+fi
+
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 
@@ -23,9 +31,9 @@ for app in {"accueil","resa","tomomi","vote"}; do
         # composer dump-env dev
 
         # Set up 'accueil' database
-        mysql -h mysql -u root -pmariadb -e "\
+        mysql -h mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "\
             CREATE DATABASE IF NOT EXISTS $app;
-            GRANT ALL PRIVILEGES ON $app.* TO mariadb IDENTIFIED BY 'mariadb';\
+            GRANT ALL PRIVILEGES ON $app.* TO $MYSQL_USER IDENTIFIED BY '$MYSQL_PASSWORD';\
             " 2>/dev/null
         # php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
         # php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
