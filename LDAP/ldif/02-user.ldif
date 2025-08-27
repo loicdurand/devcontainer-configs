@@ -1,5 +1,0 @@
-dn: cn=john,ou=users,dc=example,dc=org
-objectClass: inetOrgPerson
-cn: john
-sn: Doe
-userPassword: password
