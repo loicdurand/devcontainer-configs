@@ -10,8 +10,11 @@ services:
     ports:
       - "8000:8000"
       - "443:443"
+    networks:
+      - ldap-net
     depends_on:
       - mysql
+      - lldap
     # environment:
     #   - DATABASE_URL=mysql://mariadb:mariadb@mysql:3306/mariadb?serverVersion=8.0
 
@@ -39,6 +42,30 @@ services:
       - "80:80"
     depends_on:
       - mysql
-    
+
+  lldap:
+    image: lldap/lldap:latest
+    environment:
+      LLDAP_LDAP_BASE_DN: "dc=example,dc=org"
+      LLDAP_JWT_SECRET: "CHANGE_THIS_TO_A_RANDOM_STRING"  # Change pour la sécurité
+      LLDAP_LDAP_USER_DN: "admin"
+      LLDAP_LDAP_USER_PASS: "adminpass"  # Change pour la sécurité
+    volumes:
+      - ./ldif:/app/data:rw  # Monte les LDIF dans le dossier de données
+      - lldap-data:/data  # Persistance des données
+    ports:
+      - "389:3890"  # LDAP sur 3890 (mappé à 389)
+      - "17170:17170"  # Interface web (optionnelle)
+    networks:
+      - ldap-net
+    # test depuis le host: ldapsearch -x -H ldap://localhost:389 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w adminpass -s sub "(objectClass=*)"
+    # test depuis contenr: ldapsearch -x -H ldap://lldap:3890 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w adminpass -s sub "(objectClass=*)"
+
 volumes:
+  lldap-data:
   mysql-data:
+
+networks:
+  ldap-net:
+    driver: bridge
+      

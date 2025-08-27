@@ -11,7 +11,6 @@ RUN apt-get update && \
     libicu-dev \
     libpq-dev \
     default-mysql-client \
-    slapd \
     ldap-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
