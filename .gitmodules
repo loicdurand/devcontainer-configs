@@ -7,6 +7,9 @@
 [submodule "PHP/tomomi"]
 	path = PHP/tomomi
 	url = https://github.com/loicdurand/tomomi.git
+[submodule "PHP/vote"]
+	path = PHP/vote
+	url = https://github.com/loicdurand/vote
 [submodule "Rust/pwiz-gui"]
 	path = Rust/pwiz-gui
 	url = https://github.com/loicdurand/pwiz-gui.git
@@ -16,3 +19,4 @@
 [submodule "skoop"]
 	path = skoop
 	url = https://${GITHUB_TOKEN}@github.com/loicdurand/skoop.git
+

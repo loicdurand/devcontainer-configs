@@ -5,7 +5,7 @@ echo "Starting post-create setup at $(date)"
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 
-for app in {"accueil","resa"}; do
+for app in {"accueil","resa","tomomi","vote"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
         echo "Installing $app website dependancies..."
