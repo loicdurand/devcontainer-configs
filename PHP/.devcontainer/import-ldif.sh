@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .env
+
 # Débogage : Afficher les variables d'environnement LLDAP
 echo "LLDAP_LDAP_BASE_DN=$LLDAP_LDAP_BASE_DN"
 echo "LLDAP_LDAP_USER_DN=$LLDAP_LDAP_USER_DN"

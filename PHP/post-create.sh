@@ -1,10 +1,12 @@
 #!/bin/bash
 
 echo "Starting post-create setup at $(date)"
+cd /workspace/.devcontainer/
 
 # Charger le fichier .env
-if [ -f ".devcontainer/.env" ]; then
-  export $(grep -v '^#' .env | xargs)
+if [ -f ".env" ]; then
+    source .env
+#   export $(grep -v '^#' .env | xargs)
 else
   echo "Erreur : Fichier .env introuvable dans le répertoire courant."
   exit 1
@@ -12,8 +14,9 @@ fi
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
-
-for app in {"accueil","resa","tomomi","vote"}; do
+cd /workspace/
+app="vote"
+# for app in {"accueil","resa","tomomi","vote"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
         # echo "Installing $app website dependancies..."
@@ -26,12 +29,12 @@ for app in {"accueil","resa","tomomi","vote"}; do
         # composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
         # echo "Composer dependencies installed."
 
-        #php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
-        #DATABASE_URL="mysql://root:mariadb@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
+        # php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
+        # DATABASE_URL="mysql://root:${MYSQL_PASSWORD}@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
         # composer dump-env dev
 
         # Set up 'accueil' database
-        mysql -h mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "\
+        mysql -h mysql -u root -p$MYSQL_PASSWORD -e "\
             CREATE DATABASE IF NOT EXISTS $app;
             GRANT ALL PRIVILEGES ON $app.* TO $MYSQL_USER IDENTIFIED BY '$MYSQL_PASSWORD';\
             " 2>/dev/null
@@ -40,15 +43,17 @@ for app in {"accueil","resa","tomomi","vote"}; do
         echo "Database '$app' is ready!"
 
         # Clear Symfony cache
-        # php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
+        php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
         # echo "Symfony cache cleared."
         # npm run dev || echo "Warning: npm run dev failed, continuing..."
 
         echo "'$app' website is ready!"
+        cd /workspace
+
     else
         echo "Directory $app does not exist. Skipping setup for $app."
     fi
-done
+# done
 
 # Wait for MariaDB to be ready
 # echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"
