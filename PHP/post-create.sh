@@ -4,8 +4,8 @@ echo "Starting post-create setup at $(date)"
 
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
-
-for app in {"accueil","resa","tomomi","vote"}; do
+app="vote"
+# for app in {"accueil","resa","tomomi","vote"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
         # echo "Installing $app website dependancies..."
@@ -23,10 +23,10 @@ for app in {"accueil","resa","tomomi","vote"}; do
         # composer dump-env dev
 
         # Set up 'accueil' database
-        mysql -h mysql -u root -pmariadb -e "\
-            CREATE DATABASE IF NOT EXISTS $app;
-            GRANT ALL PRIVILEGES ON $app.* TO mariadb IDENTIFIED BY 'mariadb';\
-            " 2>/dev/null
+        # mysql -h mysql -u root -pmy_password -e "\
+        #     CREATE DATABASE IF NOT EXISTS $app;
+        #     GRANT ALL PRIVILEGES ON $app.* TO admin IDENTIFIED BY 'my_password';\
+        #     " 2>/dev/null
         # php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
         # php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
         echo "Database '$app' is ready!"
@@ -37,10 +37,17 @@ for app in {"accueil","resa","tomomi","vote"}; do
         # npm run dev || echo "Warning: npm run dev failed, continuing..."
 
         echo "'$app' website is ready!"
+        cd /workspace
+        
     else
         echo "Directory $app does not exist. Skipping setup for $app."
     fi
-done
+# done
+
+python3 -m venv ./python_venv
+cd python_venv
+./bin/pip3 install flask ldap3 python-jose[cryptography]
+cd /workspace
 
 # Wait for MariaDB to be ready
 # echo "DB connection check: mysql -h mysql -u mariadb -pmariadb -e 'SELECT 1'"

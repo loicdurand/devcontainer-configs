@@ -6,6 +6,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ../:/workspace:cached
+      - ./python_venv:/workspace/python_venv 
     command: sleep infinity
     ports:
       - "8000:8000"
@@ -21,10 +22,9 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: mariadb
-      # MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariadb
-      MYSQL_PASSWORD: mariadb
+      - MYSQL_ROOT_PASSWORD=my_password
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=my_password
     ports:
       - "3306:3306"
     volumes:
@@ -36,11 +36,11 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: mariadb
-      UPLOAD_LIMIT: 20M
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=admin
+      - PMA_PASSWORD=my_password
+      - UPLOAD_LIMIT=20M
     ports:
       - "80:80"
     depends_on:
@@ -52,15 +52,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.lldap
-    env_file:
-      - .env
     environment:
-      LLDAP_DATABASE_URL: "mysql://mariadb:mariadb@mysql:3306/lldap?serverVersion=8.0"
-      LLDAP_LDAP_BASE_DN: "dc=example,dc=org"
-      LLDAP_JWT_SECRET: "CHANGE_THIS_TO_A_RANDOM_STRING" #${LLDAP_JWT_SECRET}  # Change pour la sécurité: openssl rand -hex 32
-      LLDAP_LDAP_USER_DN: "admin"
-      LLDAP_LDAP_USER_PASS: "adminpass"
-      LLDAP_LOG_LEVEL: "debug"  # Pour logs détaillés
+      - LLDAP_DATABASE_URL=mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0
+      - LLDAP_LDAP_BASE_DN=dc=gendarmerie,dc=defense,dc=gouv,dc=fr
+      - LLDAP_JWT_SECRET=a7d3d31065ee6c940ae196378397e16881f8c525d0e7606f768756f121372d4f
+      - LLDAP_LDAP_USER_DN=admin
+      - LLDAP_LDAP_USER_PASS=my_password
+      - LLDAP_LOG_LEVEL=debug
     volumes:
       - ./ldif:/app/data:rw  # Monte les LDIF
       - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro  # Script d'entrée

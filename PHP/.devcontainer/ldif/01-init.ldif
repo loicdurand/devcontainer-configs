@@ -1,10 +1,4 @@
-dn: ou=people,dc=example,dc=org
+dn: ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr
 objectClass: organizationalUnit
+objectClass: top
 ou: people
-
-dn: uid=john,ou=people,dc=example,dc=org
-objectClass: inetOrgPerson
-uid: john
-cn: John Doe
-sn: Doe
-userPassword: password
