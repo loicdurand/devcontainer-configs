@@ -21,10 +21,8 @@ services:
 
   mysql:
     image: mysql:8.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=my_password
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=my_password
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
