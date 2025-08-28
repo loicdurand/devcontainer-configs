@@ -22,18 +22,19 @@ app="vote"
         # php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
         # DATABASE_URL="mysql://root:${MYSQL_PASSWORD}@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
         # composer dump-env dev
-
+        
+        #php bin/console doctrine:database:create
+        
         # Set up 'accueil' database
-        # mysql -h mysql -u root -pmy_password -e "\
-        #     CREATE DATABASE IF NOT EXISTS $app;
-        #     GRANT ALL PRIVILEGES ON $app.* TO admin IDENTIFIED BY 'my_password';\
-        #     " 2>/dev/null
+        mysql -h mysql -u root -pmy_password -e "\
+            CREATE DATABASE IF NOT EXISTS $app;
+            GRANT ALL PRIVILEGES ON $app.* TO admin@'%';" 2>/dev/null
         # php bin/console doctrine:migrations:migrate --no-interaction || echo "Warning: Migrations failed, continuing..."
         # php bin/console doctrine:fixtures:load --no-interaction || echo "Warning: Fixtures load failed, continuing..."
         echo "Database '$app' is ready!"
 
         # Clear Symfony cache
-        php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
+        #php bin/console cache:clear || echo "Warning: Cache clear failed, continuing..."
         # echo "Symfony cache cleared."
         # npm run dev || echo "Warning: npm run dev failed, continuing..."
 

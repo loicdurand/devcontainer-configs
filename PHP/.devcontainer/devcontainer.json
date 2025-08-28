@@ -24,7 +24,8 @@
         "clarkyu.vscode-sql-beautify",
         "meganrogge.template-string-converter",
         "mblode.twig-language-2",
-        "TheNouillet.symfony-vscode"
+        "TheNouillet.symfony-vscode",
+        "ms-python.python"
       ],
       "settings": {
         "php.executablePath": "/usr/local/bin/php",
