@@ -1,10 +1,12 @@
 #!/bin/bash
+
+# LLDAP
 LLDAP_DATABASE_URL=mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0
-      - LLDAP_LDAP_BASE_DN=dc=gendarmerie,dc=defense,dc=gouv,dc=fr
-      - LLDAP_JWT_SECRET=a7d3d31065ee6c940ae196378397e16881f8c525d0e7606f768756f121372d4f
-      - LLDAP_LDAP_USER_DN=admin
-      - LLDAP_LDAP_USER_PASS=my_password
-      - LLDAP_LOG_LEVEL=debug
+LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr" # ok
+LLDAP_JWT_SECRET=876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd
+LLDAP_LDAP_USER_DN=admin
+LLDAP_LDAP_USER_PASS=my_password
+LLDAP_LOG_LEVEL=debug
 
 LDIF_FILE=$1
 LDAP_HOST="lldap"
@@ -17,6 +19,15 @@ if [ -z "$LDIF_FILE" ]; then
   exit 1
 fi
 
-ldapadd -x -H ldap://lldap:3890 -D "admin" -w "my_password" -f "$LDIF_FILE"
+if [ -z "$LLDAP_LDAP_USER_DN" ] || [ -z "$LLDAP_LDAP_USER_PASS" ] || [ -z "$LLDAP_LDAP_BASE_DN" ]; then
+  echo "Erreur : Variables d'environnement LLDAP manquantes."
+  echo "LLDAP_LDAP_USER_DN=$LLDAP_LDAP_USER_DN"
+  echo "LLDAP_LDAP_USER_PASS=$LLDAP_LDAP_USER_PASS"
+  echo "LLDAP_LDAP_BASE_DN=$LLDAP_LDAP_BASE_DN"
+  echo "Vérifie le fichier .env ou la configuration du conteneur."
+  exit 1
+fi
+
+ldapadd -x -H ldap://$LDAP_HOST:$LDAP_PORT -D "$LDAP_BIND_DN" -w "$LDAP_BIND_PW" -f "$LDIF_FILE"
 
 echo "LDIF importé avec succès !"

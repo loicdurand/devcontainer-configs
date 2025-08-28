@@ -6,6 +6,10 @@ if ! command -v mysqladmin > /dev/null; then
   exit 1
 fi
 
+LLDAP_DATABASE_URL=mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0
+MYSQL_USER=admin
+MYSQL_PASSWORD=my_password
+
 # Vérifier que les variables nécessaires sont définies
 if [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$LLDAP_DATABASE_URL" ]; then
   echo "Erreur : Variables d'environnement MYSQL_USER, MYSQL_PASSWORD ou LLDAP_DATABASE_URL manquantes."
