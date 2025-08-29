@@ -46,9 +46,8 @@ app="vote"
     fi
 # done
 
-python3 -m venv ./python_venv
-cd python_venv
-./bin/pip3 install flask ldap3 python-jose[cryptography]
+python3 -m venv /workspace/.devcontainer/python_venv
+/workspace/bin/pip3 install flask ldap3 python-jose[cryptography]
 cd /workspace
 
 # Wait for MariaDB to be ready
