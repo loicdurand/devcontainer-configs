@@ -1,9 +1,6 @@
 from flask import Flask, request, jsonify, redirect
 from ldap3 import Server, Connection, ALL
 from jose import jwt
-from pprint import pprint
-
-import json
 
 app = Flask(__name__)
 
@@ -17,7 +14,7 @@ LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annua
 SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  # Change ça pour une vraie clé en prod !
 
 # Page de login simulée
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST']) 
 def login():
     # @TODO: définir redirect_uri dans la requête GET 
     # @TODO: rediriger vers redirect_uri en passant le token en paramètre
