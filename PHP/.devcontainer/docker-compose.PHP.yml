@@ -12,7 +12,7 @@ services:
       - "8000:8000" 
       - "443:443"
     networks:
-      - ldap-net
+      - php-net
     depends_on:
       - mysql
       - lldap
@@ -30,7 +30,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d:ro  # Monte les scripts d'init SQL
     networks:
-      - ldap-net
+      - php-net
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -45,13 +45,14 @@ services:
     depends_on:
       - mysql
     networks:
-      - ldap-net
+      - php-net
 
   lldap:
     build:
       context: .
       dockerfile: Dockerfile.lldap
     environment:
+      - TZ=America/Guadeloupe
       - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
       - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"                          # OK
       - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
@@ -61,17 +62,17 @@ services:
     # - LLDAP_FORCE_UPDATE_PRIVATE_KEY=true
     # - LLDAP_FORCE_LDAP_USER_PASS_RESET=true
     volumes:
-      - ./ldif:/app/data:rw  # Monte les LDIF
+      - ./ldif:/data:ro  # Monte les LDIF
       - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro  # Script d'entrée
     # Pas de volume /data car SQLite n'est pas utilisé
     entrypoint: ["/app/entrypoint.sh"]  # Exécute le script personnalisé
     ports:
-      - "389:3890"  # LDAP sur 3890 (mappé à 389)
+      # - "389:3890"  # LDAP sur 3890 (mappé à 389)
       - "17170:17170"  # Interface web # OK avec user admin
     depends_on:
       - mysql
     networks:
-      - ldap-net
+      - php-net
 # test depuis le host: ldapsearch -x -H ldap://localhost:389 -b "dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -D "uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -w my_admin -s sub "(objectClass=*)"
 # test depuis contenr: ldapsearch -x -H ldap://lldap:3890 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w my_admin -s sub "(objectClass=*)"
 
@@ -79,6 +80,6 @@ volumes:
   mysql-data:
 
 networks:
-  ldap-net:
+  php-net:
     driver: bridge
       
