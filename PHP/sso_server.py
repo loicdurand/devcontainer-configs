@@ -2,9 +2,6 @@ from flask import Flask, request, jsonify, redirect, make_response
 from ldap3 import Server, Connection, ALL, SUBTREE
 from jose import jwt
 import base64
-from pprint import pprint
-
-import json
 
 app = Flask(__name__)
 
@@ -18,7 +15,10 @@ LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annua
 SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  # Change ça pour une vraie clé en prod !
 
 # Attributs à récupérer
-ATTRIBUTES = ['mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'unite', 'specialite', 'codeUnite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
+ATTRIBUTES = ['memberOf', 'mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'specialite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
+
+# Attributs à récupérer pour les groupes
+GROUP_ATTRIBUTES = ['codeunite', 'displayname']
 
 # Page de login simulée
 @app.route('/login', methods=['GET', 'POST'])
@@ -150,11 +150,32 @@ body {
             print("BIND utilisateur réussi ! Génération du token JWT...")
             # Récupérer les attributs pour le JWT
             user_attributes = {attr: conn.entries[0][attr].value for attr in ATTRIBUTES if attr in conn.entries[0]}
+
+            # Récupérer les attributs de groupe via memberOf
+            if 'memberOf' in user_attributes:
+                member_of = user_attributes["memberOf"]  # Liste des DN des groupes
+                print(f"Groupes trouvés (memberOf): {member_of}")
+                for group_dn in member_of:
+                    conn.search(
+                        search_base=group_dn,
+                        search_filter='(objectClass=*)',
+                        search_scope=SUBTREE,
+                        attributes=GROUP_ATTRIBUTES
+                    )
+                    if conn.entries :
+                        group_data = {attr: conn.entries[0][attr].value for attr in GROUP_ATTRIBUTES if attr in conn.entries[0]}
+                        if group_data['codeunite'] is not None:
+                            group_attrs= group_data
+                            print(f"Attributs du groupe {group_dn}: {group_data}")
+                    else:
+                        print(f"Aucun attribut trouvé pour le groupe {group_dn}")
+
             # Authentification réussie, générer un token JWT avec les attributs
             token = jwt.encode({
                 'sub': username,
                 'role': 'user',
-                'attributes': user_attributes  # Inclure les attributs personnalisés
+                'attributes': user_attributes,  # Inclure les attributs personnalisés
+                'group_attrs': group_attrs
             }, SECRET_KEY, algorithm='HS256')
             user_conn.unbind()
             conn.unbind()
@@ -182,7 +203,11 @@ def validate_token():
         return jsonify({'valid': False, 'error': 'No token provided'}), 400
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        return jsonify({'valid': True, 'user_data': payload['attributes']})
+        return jsonify({
+            'valid': True,
+            'user_data': payload['attributes'],
+            'group_data': payload['group_attrs']  # Inclure les attributs des groupes (ou, unite)
+        })
     except:
         return jsonify({'valid': False, 'error': 'Invalid token'}), 401
 
