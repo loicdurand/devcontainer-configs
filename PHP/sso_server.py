@@ -39,7 +39,7 @@ def login():
 
         # Simule un formulaire de login
         style = '''
-body {
+                body {
                     font-family: Arial, sans-serif;
                     background-color: #f0f2f5;
                     display: flex;
@@ -155,6 +155,8 @@ body {
             if 'memberOf' in user_attributes:
                 member_of = user_attributes["memberOf"]  # Liste des DN des groupes
                 print(f"Groupes trouvés (memberOf): {member_of}")
+                if not isinstance(member_of, list):
+                    member_of=[member_of]
                 for group_dn in member_of:
                     conn.search(
                         search_base=group_dn,
