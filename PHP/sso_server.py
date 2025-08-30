@@ -1,29 +1,45 @@
-from flask import Flask, request, jsonify, redirect
-from ldap3 import Server, Connection, ALL
+from flask import Flask, request, jsonify, redirect, make_response
+from ldap3 import Server, Connection, ALL, SUBTREE
 from jose import jwt
+import base64
+from pprint import pprint
+
+import json
 
 app = Flask(__name__)
 
 # Config LDAP
-LDAP_SERVER = 'ldap://lldap:3890'  # Remplace par l'URL de ton LDAP 
-LDAP_USER_DN = 'cn=admin,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # DN de l'admin LDAP
+LDAP_SERVER = 'ldap://lldap:3890'  # URL de ton LDAP
+LDAP_USER_DN = 'uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # DN de l'admin LDAP
 LDAP_PASSWORD = 'my_password'  # Mot de passe admin
 LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annuaire
 
 # Clé secrète pour JWT
 SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  # Change ça pour une vraie clé en prod !
 
+# Attributs à récupérer
+ATTRIBUTES = ['mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'unite', 'specialite', 'codeUnite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
+
 # Page de login simulée
-@app.route('/login', methods=['GET', 'POST']) 
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    # @TODO: définir redirect_uri dans la requête GET 
-    # @TODO: rediriger vers redirect_uri en passant le token en paramètre
-    # @TODO: si échec d'auth, raffraichir la page avec message d'erreur 
     if request.method == 'GET':
+        # Récupérer redirect_uri depuis le paramètre url (encodé en base64)
+        redirect_uri = None
+        try:
+            encoded_url = request.args.get('url')
+            if encoded_url:
+                redirect_uri = base64.b64decode(encoded_url).decode('utf-8')
+                print(f"Redirect URI décodé: '{redirect_uri}'")
+            else:
+                redirect_uri = 'http://localhost:5000/validate'  # Valeur par défaut si pas de paramètre url
+        except Exception as e:
+            print(f"Erreur lors du décodage de redirect_uri: {str(e)}")
+            return jsonify({'error': 'Invalid redirect_uri'}), 400
+
         # Simule un formulaire de login
-        return '''
-            <style>
-                body {
+        style = '''
+body {
                     font-family: Arial, sans-serif;
                     background-color: #f0f2f5;
                     display: flex;
@@ -76,14 +92,18 @@ def login():
                         margin: 0 1rem;
                     }
                 }
+        '''
+        return '''
+            <style>
+                {}
             </style>
             <form method="post">
                 <input type="text" name="username" placeholder="Username"><br>
-                <input type="password" name="password" placeholder="Password"><br>
-                <input type="hidden" name="redirect_uri" value="http://localhost:5000/validate">
+                <input type="password" name="password" placeholder="Password" value="my_password"><br>
+                <input type="hidden" name="redirect_uri" value="{}">
                 <input type="submit" value="Login">
             </form>
-        '''
+        '''.format(style, redirect_uri)
     
     # Vérification des identifiants
     username = request.form.get('username')
@@ -93,45 +113,78 @@ def login():
     # AJOUT DEBUG: Afficher les valeurs reçues du formulaire
     print("=== DEBUG LOGIN ===")
     print(f"Username reçu: '{username}'")
-    print(f"Password reçu: '{password}' (masqué pour sécurité, mais longueur: {len(password) if password else 0})")
+    print(f"Password reçu: (masqué pour sécurité, longueur: {len(password) if password else 0})")
     print(f"Redirect URI: '{redirect_uri}'")
 
-    # Connexion au LDAP
+    # Connexion au LDAP avec l'admin
     try:
-        print("Tentative de connexion LDAP...")
+        print(f"Tentative de connexion au serveur LDAP: {LDAP_SERVER} avec admin")
         server = Server(LDAP_SERVER, get_info=ALL)
-        # Construction du DN pour l'utilisateur avec ou=people
-        user_dn = f'uid={username},ou=people,{LDAP_BASE_DN}'
-        print(f"DN construit pour connexion: '{user_dn}'")
-        conn = Connection(server, user=user_dn, password=password)
-        print(conn)
-        print("Connexion LDAP créée, tentative de bind...")
-        if conn.bind():
-            print("BIND LDAP réussi ! Génération du token JWT...")
-            # Authentification réussie, générer un token JWT
-            token = jwt.encode({'sub': username, 'role': 'user'}, SECRET_KEY, algorithm='HS256')
+        conn = Connection(server, user=LDAP_USER_DN, password=LDAP_PASSWORD)
+        print(f"Connexion admin créée, tentative de bind avec DN: '{LDAP_USER_DN}'")
+        if not conn.bind():
+            print(f"BIND admin échoué: {conn.result}")
+            return jsonify({'error': 'Admin bind failed', 'ldap_error': str(conn.result)}), 500
+
+        # Recherche de l'utilisateur
+        print(f"Recherche de l'utilisateur: uid={username}")
+        conn.search(
+            search_base=f'ou=people,{LDAP_BASE_DN}',
+            search_filter=f'(uid={username})',
+            search_scope=SUBTREE,
+            attributes=ATTRIBUTES  # Récupérer les attributs personnalisés
+        )
+        if not conn.entries:
+            print(f"Utilisateur '{username}' non trouvé dans ou=people,{LDAP_BASE_DN}")
+            conn.unbind()
+            return jsonify({'error': 'User not found'}), 401
+
+        # Récupérer le DN de l'utilisateur
+        user_dn = conn.entries[0].entry_dn
+        print(f"DN de l'utilisateur trouvé: '{user_dn}'")
+
+        # Tenter un bind avec les credentials de l'utilisateur
+        print(f"Tentative de bind avec l'utilisateur: '{user_dn}'")
+        user_conn = Connection(server, user=user_dn, password=password)
+        if user_conn.bind():
+            print("BIND utilisateur réussi ! Génération du token JWT...")
+            # Récupérer les attributs pour le JWT
+            user_attributes = {attr: conn.entries[0][attr].value for attr in ATTRIBUTES if attr in conn.entries[0]}
+            # Authentification réussie, générer un token JWT avec les attributs
+            token = jwt.encode({
+                'sub': username,
+                'role': 'user',
+                'attributes': user_attributes  # Inclure les attributs personnalisés
+            }, SECRET_KEY, algorithm='HS256')
+            user_conn.unbind()
             conn.unbind()
             print(f"Token généré: {token[:50]}... (tronqué pour sécurité)")
-            return redirect(f'{redirect_uri}?token={token}')
+            # Créer une réponse avec un cookie
+            response = make_response(redirect(redirect_uri))
+            response.set_cookie('lldap', token, httponly=True, secure=False)  # secure=True en prod avec HTTPS
+            return response
         else:
-            print("BIND LDAP échoué: credentials invalides.")
-            return jsonify({'error': 'Invalid credentials'}), 401
+            print(f"BIND utilisateur échoué: {user_conn.result}")
+            conn.unbind()
+            return jsonify({'error': 'Invalid credentials', 'ldap_error': str(user_conn.result)}), 401
+
     except Exception as e:
         print(f"ERREUR LDAP: {str(e)}")
-        # Optionnel: pour plus de détails sur l'exception
         import traceback
         traceback.print_exc()  # Affiche la stack trace complète
         return jsonify({'error': str(e)}), 500
 
-# Endpoint pour vérifier le token (optionnel, pour l'app cliente)
-@app.route('/validate', methods=['POST'])
+# Endpoint pour vérifier le token
+@app.route('/validate', methods=['GET'])
 def validate_token():
-    token = request.json.get('token')
+    token = request.args.get('id')
+    if not token:
+        return jsonify({'valid': False, 'error': 'No token provided'}), 400
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        return jsonify({'valid': True, 'payload': payload})
+        return jsonify({'valid': True, 'user_data': payload['attributes']})
     except:
-        return jsonify({'valid': False}), 401
+        return jsonify({'valid': False, 'error': 'Invalid token'}), 401
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

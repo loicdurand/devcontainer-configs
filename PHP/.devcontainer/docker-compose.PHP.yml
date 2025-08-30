@@ -52,7 +52,7 @@ services:
       context: .
       dockerfile: Dockerfile.lldap
     environment:
-      - TZ=America/Guadeloupe
+      - TZ=-04:00
       - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
       - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"                          # OK
       - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
