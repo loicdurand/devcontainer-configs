@@ -50,8 +50,8 @@
           "**/CVS/**",
           "**/.DS_Store/**",
           "**/node_modules/**",
-          "**/vendor/**",
-          "**/var/cache/**",
+          // "**/vendor/**",
+          // "**/var/cache/**",
           "**/var/log/**"
         ],
         "intelephense.environment.documentRoot": "/workspace",
@@ -123,7 +123,7 @@
         ],
         "intelephense.files.maxSize": 5000000,
         "intelephense.indexing.enabled": true,
-        "intelephense.indexing.maxFiles": 10000
+        // "intelephense.indexing.maxFiles": 10000
       }
     }
   }
