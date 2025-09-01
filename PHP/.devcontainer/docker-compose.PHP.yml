@@ -9,10 +9,9 @@ services:
       - ./python_venv:/workspace/python_venv 
     command: sleep infinity
     ports:
-      - "8000:8000" 
-      - "443:443"
-    networks:
-      - php-net
+      - "8000" 
+    # networks:
+    #   - php-net
     depends_on:
       - mysql
       - lldap
@@ -25,12 +24,12 @@ services:
       MYSQL_USER: admin           # OK -> admin  sur lldap
       MYSQL_PASSWORD: my_password # OK
     ports:
-      - "3306:3306"
+      - "3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d:ro  # Monte les scripts d'init SQL
-    networks:
-      - php-net
+    # networks:
+    #   - php-net
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -41,11 +40,11 @@ services:
       - PMA_PASSWORD=my_password
       - UPLOAD_LIMIT=20M
     ports:
-      - "80:80"
+      - "80"
     depends_on:
       - mysql
-    networks:
-      - php-net
+    # networks:
+    #   - php-net
 
   lldap:
     build:
@@ -62,24 +61,35 @@ services:
     # - LLDAP_FORCE_UPDATE_PRIVATE_KEY=true
     # - LLDAP_FORCE_LDAP_USER_PASS_RESET=true
     volumes:
-      - ./ldif:/data:ro  # Monte les LDIF
+      - ./ldif:/data:rw  # Monte les LDIF
       - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro  # Script d'entrée
     # Pas de volume /data car SQLite n'est pas utilisé
     entrypoint: ["/app/entrypoint.sh"]  # Exécute le script personnalisé
     ports:
-      # - "389:3890"  # LDAP sur 3890 (mappé à 389)
-      - "17170:17170"  # Interface web # OK avec user admin
+      - "389" #:3890"  # LDAP sur 3890 (mappé à 389)
+      - "17170"  # Interface web # OK avec user admin
     depends_on:
       - mysql
-    networks:
-      - php-net
+    # networks:
+    #   - php-net
 # test depuis le host: ldapsearch -x -H ldap://localhost:389 -b "dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -D "uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -w my_admin -s sub "(objectClass=*)"
 # test depuis contenr: ldapsearch -x -H ldap://lldap:3890 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w my_admin -s sub "(objectClass=*)"
-
+  reverse-proxy:
+      image: nginx:latest
+      container_name: reverse-proxy
+      ports:
+        - "80:80"  # Expose le port 80 de l'hôte vers le 80 du container
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:rw  # Monte ton fichier de config
+      depends_on:
+        - php
+        - lldap
+        - mysql
+        - phpmyadmin
 volumes:
   mysql-data:
 
-networks:
-  php-net:
-    driver: bridge
+# networks:
+#   php-net:
+#     driver: bridge
       
