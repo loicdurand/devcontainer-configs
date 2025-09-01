@@ -20,7 +20,7 @@ services:
     image: python:3.9
     build:
       context: ../
-      dockerfile: .devcontainer/Dockerfile.python
+      dockerfile: .devcontainer/Dockerfile.sso
     volumes:
       - ../:/workspace:cached
       - ./python_venv:/workspace/.devcontainer/python_venv
