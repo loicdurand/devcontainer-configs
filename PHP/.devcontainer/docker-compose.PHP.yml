@@ -9,9 +9,10 @@ services:
       - ./python_venv:/workspace/python_venv 
     command: sleep infinity
     ports:
-      - "8000" 
-    # networks:
-    #   - php-net
+      - "8000:8000" 
+      - "5000:5000"
+    networks:
+      - php-net
     depends_on:
       - mysql
       - lldap
@@ -58,6 +59,7 @@ services:
       - LLDAP_LDAP_USER_DN="admin"
       - LLDAP_LDAP_USER_PASS="my_password"
       - LOG_LEVEL="debug"
+      # - LLDAP_HTTP_URL=http://localhost:80/ldap/
     # - LLDAP_FORCE_UPDATE_PRIVATE_KEY=true
     # - LLDAP_FORCE_LDAP_USER_PASS_RESET=true
     volumes:
@@ -82,14 +84,14 @@ services:
       volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:rw  # Monte ton fichier de config
       depends_on:
-        - php
         - lldap
         - mysql
         - phpmyadmin
+        
 volumes:
   mysql-data:
 
-# networks:
-#   php-net:
-#     driver: bridge
+networks:
+  php-net:
+    driver: bridge
       
