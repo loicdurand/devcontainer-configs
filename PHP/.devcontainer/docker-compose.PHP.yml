@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   php:
@@ -6,46 +7,47 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ../:/workspace:cached
-      - ./python_venv:/workspace/python_venv 
+      - ./python_venv:/workspace/python_venv
     command: sleep infinity
     ports:
-      - "8000:8000" 
-      - "5000:5000"
+      - "8000:8000"  # App accessible directement
+      # - "5000:5000"  # Optionnel pour débogage
     networks:
       - php-net
     depends_on:
       - mysql
       - lldap
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]  # Vérifie que le SSO répond
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   mysql:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: my_password
-      # MYSQL_DATABASE: my_password
-      MYSQL_USER: admin           # OK -> admin  sur lldap
-      MYSQL_PASSWORD: my_password # OK
-    ports:
-      - "3306"
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: my_password
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./mysql-init:/docker-entrypoint-initdb.d:ro  # Monte les scripts d'init SQL
-    # networks:
-    #   - php-net
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - php-net
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
       - PMA_ARBITRARY=1
-      - PMA_HOST=mysql          # OK
+      - PMA_HOST=mysql
       - PMA_USER=admin
       - PMA_PASSWORD=my_password
       - UPLOAD_LIMIT=20M
-    ports:
-      - "80"
     depends_on:
       - mysql
-    # networks:
-    #   - php-net
+    networks:
+      - php-net
 
   lldap:
     build:
@@ -54,44 +56,40 @@ services:
     environment:
       - TZ=-04:00
       - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
-      - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"                          # OK
+      - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"
       - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
       - LLDAP_LDAP_USER_DN="admin"
       - LLDAP_LDAP_USER_PASS="my_password"
       - LOG_LEVEL="debug"
-      # - LLDAP_HTTP_URL=http://localhost:80/ldap/
-    # - LLDAP_FORCE_UPDATE_PRIVATE_KEY=true
-    # - LLDAP_FORCE_LDAP_USER_PASS_RESET=true
     volumes:
-      - ./ldif:/data:rw  # Monte les LDIF
-      - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro  # Script d'entrée
-    # Pas de volume /data car SQLite n'est pas utilisé
-    entrypoint: ["/app/entrypoint.sh"]  # Exécute le script personnalisé
-    ports:
-      - "389" #:3890"  # LDAP sur 3890 (mappé à 389)
-      - "17170"  # Interface web # OK avec user admin
+      - ./ldif:/data:rw
+      - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro
+    entrypoint: ["/app/entrypoint.sh"]
     depends_on:
       - mysql
-    # networks:
-    #   - php-net
-# test depuis le host: ldapsearch -x -H ldap://localhost:389 -b "dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -D "uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr" -w my_admin -s sub "(objectClass=*)"
-# test depuis contenr: ldapsearch -x -H ldap://lldap:3890 -b "dc=example,dc=org" -D "uid=admin,ou=people,dc=example,dc=org" -w my_admin -s sub "(objectClass=*)"
+    networks:
+      - php-net
+
   reverse-proxy:
-      image: nginx:latest
-      container_name: reverse-proxy
-      ports:
-        - "80:80"  # Expose le port 80 de l'hôte vers le 80 du container
-      volumes:
-        - ./nginx.conf:/etc/nginx/nginx.conf:rw  # Monte ton fichier de config
-      depends_on:
-        - lldap
-        - mysql
-        - phpmyadmin
-        
+    image: nginx:latest
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      php:
+        condition: service_healthy  # Attend que php soit sain
+      lldap:
+        condition: service_started
+      phpmyadmin:
+        condition: service_started
+    networks:
+      - php-net
+
 volumes:
   mysql-data:
 
 networks:
   php-net:
     driver: bridge
-      

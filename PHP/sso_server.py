@@ -215,4 +215,4 @@ def validate_token():
         return jsonify({'valid': False, 'error': 'Invalid token'}), 401
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
