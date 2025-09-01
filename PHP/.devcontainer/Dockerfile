@@ -82,9 +82,8 @@ WORKDIR /workspace
 RUN chown -R www-data:www-data /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private \
     && chmod -R 775 /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private
 
-RUN python3 -m venv /workspace/.devcontainer/python_venv && \
-    /workspace/.devcontainer/python_venv/bin/pip3 install flask ldap3 python-jose[cryptography] && \
-     /workspace/.devcontainer/python_venv/bin/python3 /workspace/sso_server.py
-
 # Exposing ports for Apache
 EXPOSE 8000 443
+
+# Start Apache in foreground
+#CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

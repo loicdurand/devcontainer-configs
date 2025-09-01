@@ -1,0 +1,25 @@
+FROM python:3.9
+
+# Installe les dépendances système nécessaires, si besoin
+# RUN apt-get update && apt-get install -y \
+#     # Ajoute ici d'autres dépendances système si nécessaire
+#     && rm -rf /var/lib/apt/lists/*
+
+# Crée le répertoire de travail
+WORKDIR /workspace
+
+# Copie les fichiers du projet (facultatif, car tu montes un volume)
+# COPY . /workspace
+
+# Crée et active le virtualenv
+RUN python3 -m venv /workspace/.devcontainer/python_venv
+
+# Active le venv et installe Flask
+RUN /workspace/.devcontainer/python_venv/bin/pip install --upgrade pip \
+    && /workspace/.devcontainer/python_venv/bin/pip install flask ldap3 python-jose[cryptography] 
+
+# Commande par défaut (sera écrasée par docker-compose.yml)
+CMD ["/bin/bash"]
+
+# Setting working directory
+WORKDIR /workspace
