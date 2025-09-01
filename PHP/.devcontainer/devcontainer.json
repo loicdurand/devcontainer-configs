@@ -6,11 +6,13 @@
   "remoteUser": "loic",
   "containerUser": "loic",
   "features": {},
-  "forwardPorts": [
-    8000,
-    443,
-    3306
-  ],
+  // "forwardPorts": [
+  //   8000,
+  //   5000,
+  //   3306,
+  //   17170,
+  //   3900
+  // ],
   "postCreateCommand": "bash post-create.sh",
   "customizations": {
     "vscode": {
