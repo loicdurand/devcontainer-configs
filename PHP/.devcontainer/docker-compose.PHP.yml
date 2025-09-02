@@ -22,9 +22,8 @@ services:
       context: ../
       dockerfile: .devcontainer/Dockerfile.sso
     volumes:
-      - ../:/workspace:cached
-      - ./python_venv:/workspace/.devcontainer/python_venv
-    command: /workspace/.devcontainer/python_venv/bin/python3 /workspace/sso_server.py &
+      - ./:/workspace:cached
+    command: python3 /workspace/sso_server.py &
     networks:
       - php-net
     depends_on:

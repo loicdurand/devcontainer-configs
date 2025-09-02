@@ -12,11 +12,12 @@ WORKDIR /workspace
 # COPY . /workspace
 
 # Crée et active le virtualenv
-RUN python3 -m venv /workspace/.devcontainer/python_venv
+# RUN python3 -m venv /workspace/python_venv
 
-# Active le venv et installe Flask
-RUN /workspace/.devcontainer/python_venv/bin/pip install --upgrade pip \
-    && /workspace/.devcontainer/python_venv/bin/pip install flask ldap3 python-jose[cryptography] 
+# # Active le venv et installe Flask
+# RUN /workspace/python_venv/bin/pip install --upgrade pip \
+#     && /workspace/python_venv/bin/
+RUN pip install flask ldap3 python-jose[cryptography] 
 
 # Commande par défaut (sera écrasée par docker-compose.yml)
 CMD ["/bin/bash"]
