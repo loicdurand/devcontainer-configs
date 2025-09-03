@@ -27,7 +27,8 @@
         "meganrogge.template-string-converter",
         "mblode.twig-language-2",
         "TheNouillet.symfony-vscode",
-        "ms-python.python"
+        "ms-python.python",
+        "formulahendry.auto-rename-tag"
       ],
       "settings": {
         "php.executablePath": "/usr/local/bin/php",
