@@ -15,6 +15,7 @@ RUN apt-get update && \
     python3 \
     python3-pip \
     python3-venv \
+    libldap2-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,6 +23,7 @@ RUN docker-php-ext-install \
     pdo_mysql \
     zip \
     intl \
+    ldap \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
