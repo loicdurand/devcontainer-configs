@@ -7,10 +7,9 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ../:/workspace:cached
-    command: sleep infinity
-    ports:
-      - "8000:80"  # App accessible directement
-      # - "5000:5000"  # Décommenter pour débogage si besoin
+    # command: sleep infinity
+    # ports:
+    #   - "8000:80"  # App accessible directement
     networks:
       - php-net
     depends_on:
