@@ -185,7 +185,15 @@ def login():
             print(f"Token généré: {token[:50]}... (tronqué pour sécurité)")
             # Créer une réponse avec un cookie
             response = make_response(redirect(redirect_uri))
-            response.set_cookie('lldap', token, httponly=True, secure=False)  # secure=True en prod avec HTTPS
+            response.set_cookie(
+                'lldap', 
+                token, 
+                path='/',
+                domain='localhost',
+                httponly=True, 
+                secure=False, 
+                samesite='Lax'
+            )  # secure=True en prod avec HTTPS
             return response
         else:
             print(f"BIND utilisateur échoué: {user_conn.result}")
