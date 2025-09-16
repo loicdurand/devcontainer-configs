@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../:/workspace:cached
+    # command: sleep infinity
+    # ports:
+    #   - "8000:80"  # App accessible directement
+    networks:
+      - php-net
+    depends_on:
+      - mysql
+
+  sso:
+    image: python:3.9
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile.sso
+    volumes:
+      - ./:/workspace:cached
+    command: python3 /workspace/sso_server.py &
+    networks:
+      - php-net
+    depends_on:
+      - mysql
+      - lldap
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: my_password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: my_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - php-net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=admin
+      - PMA_PASSWORD=my_password
+      - UPLOAD_LIMIT=20M
+    depends_on:
+      - mysql
+    networks:
+      - php-net
+
+  lldap:
+    build:
+      context: .
+      dockerfile: Dockerfile.lldap
+    environment:
+      - TZ=-04:00
+      - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
+      - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"
+      - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
+      - LLDAP_LDAP_USER_DN="admin"
+      - LLDAP_LDAP_USER_PASS="my_password"
+      - LOG_LEVEL="debug"
+    volumes:
+      - ./ldif:/data:rw
+      - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro
+    entrypoint: ["/app/entrypoint.sh"]
+    depends_on:
+      - mysql
+    networks:
+      - php-net
+
+  reverse-proxy:
+    image: nginx:latest
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+    - php
+    - lldap
+    - phpmyadmin
+      # php:
+      #   condition: service_healthy
+      # lldap:
+      #   condition: service_started
+      # phpmyadmin:
+      #   condition: service_started
+    networks:
+      - php-net
+
+volumes:
+  mysql-data:
+
+networks:
+  php-net:
+    driver: bridge

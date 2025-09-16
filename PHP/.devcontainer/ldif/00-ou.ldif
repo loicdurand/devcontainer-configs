@@ -1,0 +1,4 @@
+dn: ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr
+objectClass: organizationalUnit
+objectClass: top
+ou: people

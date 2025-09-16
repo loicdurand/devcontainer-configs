@@ -1,0 +1,10 @@
+dn: ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr
+objectClass: organizationalUnit
+ou: people
+
+dn: uid=john,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+uid: john.doe
+cn: John Doe
+sn: Doe
+userPassword: password
