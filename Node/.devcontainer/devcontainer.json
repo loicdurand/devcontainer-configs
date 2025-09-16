@@ -52,10 +52,10 @@
             }
         }
     },
-    "postCreateCommand": "npm install -g typescript && npm install",
+    "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript && npm install",
     "mounts": [
-        "source=${localWorkspaceFolder}/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/frontend/node_modules,type=bind,consistency=cached",
-        "source=${localWorkspaceFolder}/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/backend/node_modules,type=bind,consistency=cached"
+        "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached"
     ],
     "remoteUser": "node"
 }
