@@ -22,6 +22,10 @@
         {
             "name": "Flutter Dev Container",
             "workspaceFolder": "/workspace"
+        },
+        {
+            "name": "Node Dev Container",
+            "workspaceFolder": "/workspace"
         }
     ]
 }

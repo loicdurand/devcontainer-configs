@@ -1,0 +1,61 @@
+{
+    "name": "Portfolio Vitrine",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "forwardPorts": [
+        3000,
+        5000
+    ],
+    "portsAttributes": {
+        "3000": {
+            "label": "React Frontend",
+            "onAutoForward": "notify"
+        },
+        "5000": {
+            "label": "Express Backend",
+            "onAutoForward": "notify"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-next",
+                "syler.sass-indented",
+                "xabikos.JavaScriptSnippets",
+                "formulahendry.auto-rename-tag"
+            ],
+            "settings": {
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "[typescriptreact]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[scss]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "editor.formatOnSave": true,
+                "editor.fontSize": 18,
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash",
+                        "icon": "terminal-bash"
+                    }
+                }
+            }
+        }
+    },
+    "postCreateCommand": "npm install -g typescript && npm install",
+    "mounts": [
+        "source=${localWorkspaceFolder}/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/frontend/node_modules,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/backend/node_modules,type=bind,consistency=cached"
+    ],
+    "remoteUser": "node"
+}
