@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "PHP Dev Container",
-            "dockerComposeFile": "../.devcontainer/docker-compose.PHP.yml",
+            "dockerComposeFile": "../../PHP/devcontainer/docker-compose.PHP.yml",
             "service": "php",
             "workspaceFolder": "/workspace"
         },
@@ -21,6 +21,10 @@
         },
         {
             "name": "Flutter Dev Container",
+            "workspaceFolder": "/workspace"
+        },
+        {
+            "name": "Node Dev Container",
             "workspaceFolder": "/workspace"
         }
     ]

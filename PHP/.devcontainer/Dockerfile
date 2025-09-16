@@ -12,6 +12,10 @@ RUN apt-get update && \
     libpq-dev \
     default-mysql-client \
     ldap-utils \
+    python3 \
+    python3-pip \
+    python3-venv \
+    libldap2-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +23,7 @@ RUN docker-php-ext-install \
     pdo_mysql \
     zip \
     intl \
+    ldap \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -34,6 +39,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Installing Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+
+RUN a2enmod rewrite headers
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 # RUN git clone https://github.com/loicdurand/accueil.git
 
@@ -80,7 +88,7 @@ RUN chown -R www-data:www-data /workspace /var/log/apache2 /etc/ssl/certs /etc/s
     && chmod -R 775 /workspace /var/log/apache2 /etc/ssl/certs /etc/ssl/private
 
 # Exposing ports for Apache
-EXPOSE 8000 443
+EXPOSE 80 443
 
 # Start Apache in foreground
-#CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
