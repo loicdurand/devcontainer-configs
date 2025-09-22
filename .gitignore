@@ -7,3 +7,4 @@
 **/ldif/01-unite_*
 
 **/python_venv/*
+__pycache__/

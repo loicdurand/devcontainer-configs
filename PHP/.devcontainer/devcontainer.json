@@ -5,7 +5,9 @@
   "workspaceFolder": "/workspace",
   "remoteUser": "loic",
   "containerUser": "loic",
-  "features": {},
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
   // "forwardPorts": [
   //   8000,
   //   5000,

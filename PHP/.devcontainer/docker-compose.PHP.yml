@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   php:
     build:
@@ -22,7 +20,7 @@ services:
       dockerfile: .devcontainer/Dockerfile.sso
     volumes:
       - ./:/workspace:cached
-    command: python3 /workspace/sso_server.py &
+    command: python3 /workspace/sso_server/sso_server.py &
     networks:
       - php-net
     depends_on:
