@@ -3,14 +3,11 @@
     "dockerComposeFile": "../../.devcontainer/docker-compose.Rust.yml",
     "service": "rust",
     "workspaceFolder": "/workspace",
+    // "features": {
+    //     "ghcr.io/devcontainers/features/git:1": {}
+    // },
     "customizations": {
         "vscode": {
-            "features": {
-                "git":{
-                    "version": "latest",
-                    "installFrom":"apt"
-                }
-            },
             "extensions": [
                 "xabikos.JavaScriptSnippets",
                 "wix.vscode-import-cost",
