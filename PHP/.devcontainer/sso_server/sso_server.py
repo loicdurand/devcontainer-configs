@@ -12,8 +12,8 @@ LDAP_USER_DN = 'uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # 
 LDAP_PASSWORD = 'my_password'  # Mot de passe admin
 LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annuaire
 
-# Clé secrète pour JWT
-SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  # Change ça pour une vraie clé en prod !
+# Clé secrète pour JWT (à changer en prod, évidemment!)
+SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  
 
 # Attributs à récupérer
 ATTRIBUTES = ['memberOf', 'mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'specialite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
@@ -38,62 +38,10 @@ def login():
             print(f"Erreur lors du décodage de redirect_uri: {str(e)}")
             return jsonify({'error': 'Invalid redirect_uri'}), 400
 
+        with open('/workspace/sso_server/sso_server.css') as f:
+            style = f.read()
+
         # Simule un formulaire de login
-        style = '''
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f0f2f5;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                }
-                .login-container {
-                    background-color: white;
-                    padding: 2rem;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    width: 100%;
-                    max-width: 400px;
-                    text-align: center;
-                }
-                h2 {
-                    color: #333;
-                    margin-bottom: 1.5rem;
-                }
-                input[type="text"], input[type="password"] {
-                    width: 100%;
-                    padding: 0.75rem;
-                    margin: 0.5rem 0;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 1rem;
-                }
-                input[type="submit"] {
-                    width: 100%;
-                    padding: 0.75rem;
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    transition: background-color 0.3s;
-                }
-                input[type="submit"]:hover {
-                    background-color: #0056b3;
-                }
-                input[type="hidden"] {
-                    display: none;
-                }
-                @media (max-width: 500px) {
-                    .login-container {
-                        padding: 1rem;
-                        margin: 0 1rem;
-                    }
-                }
-        '''
         return '''
             <style>
                 {}

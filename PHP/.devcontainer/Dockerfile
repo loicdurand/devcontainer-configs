@@ -10,6 +10,7 @@ RUN apt-get update && \
     libzip-dev \
     libicu-dev \
     libpq-dev \
+    libpng-dev \
     default-mysql-client \
     ldap-utils \
     python3 \
@@ -23,6 +24,7 @@ RUN docker-php-ext-install \
     pdo_mysql \
     zip \
     intl \
+    gd \
     ldap \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
