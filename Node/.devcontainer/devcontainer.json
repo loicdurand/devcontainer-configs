@@ -1,61 +1,59 @@
 {
-    "name": "Portfolio Vitrine",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
-    "features": {
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-        "ghcr.io/devcontainers/features/git:1": {}
+  "name": "Portfolio Vitrine",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "forwardPorts": [3000, 5000],
+  "portsAttributes": {
+    "3000": {
+      "label": "React Frontend",
+      "onAutoForward": "notify"
     },
-    "forwardPorts": [
-        3000,
-        5000
-    ],
-    "portsAttributes": {
-        "3000": {
-            "label": "React Frontend",
-            "onAutoForward": "notify"
+    "5000": {
+      "label": "Express Backend",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "syler.sass-indented",
+        "xabikos.JavaScriptSnippets",
+        "formulahendry.auto-rename-tag"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
-        "5000": {
-            "label": "Express Backend",
-            "onAutoForward": "notify"
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[scss]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "editor.formatOnSave": true,
+        "editor.fontSize": 18,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "icon": "terminal-bash"
+          }
         }
-    },
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode",
-                "ms-vscode.vscode-typescript-next",
-                "syler.sass-indented",
-                "xabikos.JavaScriptSnippets",
-                "formulahendry.auto-rename-tag"
-            ],
-            "settings": {
-                "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "[typescriptreact]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[typescript]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[scss]": {
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "editor.formatOnSave": true,
-                "editor.fontSize": 18,
-                "terminal.integrated.defaultProfile.linux": "bash",
-                "terminal.integrated.profiles.linux": {
-                    "bash": {
-                        "path": "/bin/bash",
-                        "icon": "terminal-bash"
-                    }
-                }
-            }
-        }
-    },
-    "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript && npm install",
-    "mounts": [
-        "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
-        "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached"
-    ],
-    "remoteUser": "node"
+      }
+    }
+  },
+  "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript && npm install",
+  "mounts": [
+    "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/backend/src/db.json,target=/workspaces/${localWorkspaceFolderBasename}/backend/src/db.json,type=bind,consistency=cached"
+  ],
+  "remoteUser": "node"
 }
