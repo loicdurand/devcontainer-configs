@@ -1,6 +1,6 @@
 {
   "name": "PHP Dev Container",
-  "dockerComposeFile": "./docker-compose.PHP.yml",
+  "dockerComposeFile": "./docker-compose.yml",
   "service": "php",
   "workspaceFolder": "/workspace",
   "remoteUser": "loic",
