@@ -20,7 +20,8 @@
                 "karunamurti.tera",
                 "rust-lang.rust-analyzer",
                 "mblode.twig-language-2",
-                "serhatkaya.twig-formatter"
+                "serhatkaya.twig-formatter",
+                "Vue.volar"
             ],
             "settings": {
                 "editor.fontSize": 18,
