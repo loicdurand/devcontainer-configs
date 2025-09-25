@@ -7,9 +7,7 @@
 [submodule "PHP/tomomi"]
 	path = PHP/tomomi
 	url = https://github.com/loicdurand/tomomi.git
-[submodule "minibotin"]
-	path = PHP/minibotin
-	url = https://${GITHUB_TOKEN}@github.com/loicdurand/minibotin.git
+
 
 [submodule "PHP/vote"]
 	path = PHP/vote
@@ -27,3 +25,6 @@
 [submodule "portfolio-vitrine"]
 	path = Node/portfolio-vitrine
 	url = https://${GITHUB_TOKEN}@github.com/loicdurand/portfolio-vitrine.git
+[submodule "PHP/minibotin"]
+	path = PHP/minibotin
+	url = https://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@github.com/loicdurand/minibotin.git
