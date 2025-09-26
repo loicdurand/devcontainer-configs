@@ -65,15 +65,15 @@ cd /workspace
 # done
 # echo "MariaDB is ready!"
 
-cat << EOF
-When ready, serve the application with:
-    1. Open a terminal in the container, then `cd` into your Symfony project directory.
-    2. Run 'symfony serve --no-tls --listen-ip=0.0.0.0 -d' to start the Symfony server in detached mode.
-    3. Access your application at http://localhost:8000
-    4. To stop the server, run 'symfony server:stop'.
-    5. To restart the server, run 'symfony server:start'.
+# cat << EOF
+# When ready, serve the application with:
+#     1. Open a terminal in the container, then `cd` into your Symfony project directory.
+#     2. Run 'symfony serve --no-tls --listen-ip=0.0.0.0 -d' to start the Symfony server in detached mode.
+#     3. Access your application at http://localhost:8000
+#     4. To stop the server, run 'symfony server:stop'.
+#     5. To restart the server, run 'symfony server:start'.
 
-EOF
+# EOF
 
 # Changement su shell
 /bin/bash

@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "PHP Dev Container",
-            "dockerComposeFile": "../../PHP/devcontainer/docker-compose.PHP.yml",
+            "dockerComposeFile": "../../PHP/devcontainer/docker-compose.yml",
             "service": "php",
             "workspaceFolder": "/workspace"
         },
