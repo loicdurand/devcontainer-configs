@@ -7,9 +7,6 @@
 [submodule "PHP/tomomi"]
 	path = PHP/tomomi
 	url = https://github.com/loicdurand/tomomi.git
-[submodule "minibotin"]
-	path = PHP/minibotin
-	url = https://${GITHUB_TOKEN}@github.com/loicdurand/minibotin.git
 
 [submodule "PHP/vote"]
 	path = PHP/vote
