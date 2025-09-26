@@ -1,22 +1,22 @@
 [submodule "PHP/accueil"]
 	path = PHP/accueil
-	url = https://github.com/loicdurand/accueil.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/accueil.git
 [submodule "PHP/resa"]
 	path = PHP/resa
-	url = https://github.com/loicdurand/resa.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/resa.git
 [submodule "PHP/tomomi"]
 	path = PHP/tomomi
-	url = https://github.com/loicdurand/tomomi.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/tomomi.git
 
 [submodule "PHP/vote"]
 	path = PHP/vote
-	url = https://github.com/loicdurand/vote
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/vote
 [submodule "Rust/pwiz-gui"]
 	path = Rust/pwiz-gui
-	url = https://github.com/loicdurand/pwiz-gui.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/pwiz-gui.git
 [submodule "Rust/pwiz-web"]
 	path = Rust/pwiz-web
-	url = https://github.com/loicdurand/pwiz-web.git
+	url = https://${GITHUB_TOKEN}@github.com/loicdurand/pwiz-web.git
 [submodule "skoop"]
 	path = skoop
 	url = https://${GITHUB_TOKEN}@github.com/loicdurand/skoop.git
