@@ -1,4 +1,4 @@
-{
+Fdb{
     "name": "Portfolio Vitrine",
     "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
     "features": {
@@ -55,7 +55,7 @@
     "mounts": [
         "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
         "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
-        "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db.json,type=bind,consistency=cached"
+        "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached"
       ],
     "remoteUser": "node"
 }
