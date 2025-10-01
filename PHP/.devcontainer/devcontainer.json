@@ -128,7 +128,7 @@
           "zlib"
         ],
         "intelephense.files.maxSize": 5000000,
-        "intelephense.indexing.enabled": true,
+        "intelephense.indexing.enabled": true
         // "intelephense.indexing.maxFiles": 10000
       }
     }
