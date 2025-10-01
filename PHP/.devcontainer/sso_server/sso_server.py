@@ -67,6 +67,7 @@ def login():
 
     # Connexion au LDAP avec l'admin
     try:
+        group_attrs = {}
         print(f"Tentative de connexion au serveur LDAP: {LDAP_SERVER} avec admin")
         server = Server(LDAP_SERVER, get_info=ALL)
         conn = Connection(server, user=LDAP_USER_DN, password=LDAP_PASSWORD)
@@ -116,7 +117,7 @@ def login():
                     if conn.entries :
                         group_data = {attr: conn.entries[0][attr].value for attr in GROUP_ATTRIBUTES if attr in conn.entries[0]}
                         if group_data['codeunite'] is not None:
-                            group_attrs= group_data
+                            group_attrs = group_data
                             print(f"Attributs du groupe {group_dn}: {group_data}")
                     else:
                         print(f"Aucun attribut trouvé pour le groupe {group_dn}")
@@ -142,6 +143,7 @@ def login():
                 secure=False, 
                 samesite='Lax'
             )  # secure=True en prod avec HTTPS
+            print(f"return response =============")
             return response
         else:
             print(f"BIND utilisateur échoué: {user_conn.result}")
