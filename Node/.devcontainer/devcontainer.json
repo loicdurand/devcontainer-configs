@@ -4,6 +4,9 @@
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+  ],
   "forwardPorts": [3000, 5000],
   "portsAttributes": {
     "3000": {

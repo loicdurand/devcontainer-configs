@@ -5,8 +5,8 @@ echo "Starting post-create setup at $(date)"
 # Log output to a file for debugging
 # exec &> /workspace/post-create.log
 cd /workspace/
-app="vote"
-# for app in {"accueil","resa","tomomi","vote"}; do
+# app="vote"
+for app in {"accueil","resa","vote"}; do
     # Check if the directory exists
     if [ -d "$app" ]; then
         # echo "Installing $app website dependancies..."
@@ -44,7 +44,7 @@ app="vote"
     else
         echo "Directory $app does not exist. Skipping setup for $app."
     fi
-# done
+done
 
 # python3 -m venv /workspace/.devcontainer/python_venv
 # /workspace/.devcontainer/python_venv/bin/pip3 install flask ldap3 python-jose[cryptography]
