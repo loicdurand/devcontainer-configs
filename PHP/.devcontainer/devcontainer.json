@@ -9,7 +9,7 @@
     "ghcr.io/devcontainers/features/git:1": {}
   },
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached"
   ],
   "forwardPorts": [
     80

@@ -50,10 +50,11 @@
   },
   "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript react-scripts sass && npm install",
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached"
   ],
-  "remoteUser": "node"
+  "remoteUser": "loic",
+  "containerUser": "loic"
 }
