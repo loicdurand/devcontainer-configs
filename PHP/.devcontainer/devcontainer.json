@@ -44,6 +44,11 @@
         "editor.formatOnSave": true,
         "editor.fontSize": 18,
         "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/*/**": true
+        },
         "terminal.integrated.profiles.linux": {
           "bash": {
             "path": "/bin/bash",
