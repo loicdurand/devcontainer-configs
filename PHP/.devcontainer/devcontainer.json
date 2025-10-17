@@ -9,11 +9,11 @@
     "ghcr.io/devcontainers/features/git:1": {}
   },
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached"
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,type=bind,consistency=cached"
   ],
-  "forwardPorts": [
-    80
-  ],
+  // "forwardPorts": [
+  //   80
+  // ],
   // "forwardPorts": [
   //   8000,
   //   5000,
