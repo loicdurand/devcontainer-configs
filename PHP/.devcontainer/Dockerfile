@@ -25,8 +25,8 @@ RUN docker-php-ext-install \
     zip \
     intl \
     exif \
-    gd \
     ldap \
+    gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
