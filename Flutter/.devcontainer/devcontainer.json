@@ -10,6 +10,10 @@
             "installGradle": false
         }
     },
+    "mounts": [
+        "source=/home/loic/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/,target=/workspace/${localWorkspaceFolderBasename}/,type=bind,consistency=cached"
+    ],
     "postCreateCommand": "bash .devcontainer/setup.sh",
     "customizations": {
         "vscode": {
