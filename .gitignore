@@ -10,11 +10,17 @@
 __pycache__/
 
 Node/portfolio-vitrine/
+
 Rust/pwiz-gui
 Rust/pwiz-web
 Rust/racoon-store
+Rust/frigo
 
 PHP/accueil
 PHP/resa
 PHP/vote
 PHP/Ti-Botin
+
+Flutter/plage-reporter
+Flutter/flutter_linux_3.24.5-stable.tar.xz
+Flutter/latest/
