@@ -16,6 +16,7 @@ Rust/pwiz-web
 Rust/racoon-store
 Rust/frigo
 Rust/mIAm
+Rust/model
 
 PHP/accueil
 PHP/resa
@@ -28,3 +29,4 @@ Flutter/cmdline-tools.zip
 Flutter/latest/
 
 Ai/llama.cpp
+Flow/flow-app

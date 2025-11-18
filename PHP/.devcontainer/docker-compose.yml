@@ -64,6 +64,7 @@ services:
       - LLDAP_LDAP_USER_DN="admin"
       - LLDAP_LDAP_USER_PASS="my_password"
       - LOG_LEVEL="debug"
+      - LLDAP_FORCE_UPDATE_PRIVATE_KEY=true
     volumes:
       - ./ldif:/data:rw
       - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro

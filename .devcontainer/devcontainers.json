@@ -26,6 +26,11 @@
         {
             "name": "Node Dev Container",
             "workspaceFolder": "/workspace"
+        },
+        {
+            "name": "Flow Dev Container",
+            "dockerFile": "../Flow/.devcontainer/Dockerfile",
+            "workspaceFolder": "/workspace"
         }
     ]
 }
