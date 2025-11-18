@@ -67,18 +67,17 @@
     }
   },
   "postCreateCommand": {
-    "copy_bashrc": "echo alias ll=\\'ls -alF\\' >> /home/node/.bashrc",
     "init_portfolio": "cd portfolio-vitrine && npm install -g typescript sass react-scripts && npm install",
     "expo-eas-cli": "npm install -g expo-cli eas-cli",
     "supabase-cli": "mkdir -p flow-app && cd flow-app && npm install supabase",
-    "ollama": "curl -fsSL https://ollama.com/install.sh | sh && ollama pull happyaiuser/llama3.2-1b-finetome"
+    "ollama": "curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz | sudo tar zx -C /usr  && ollama pull happyaiuser/llama3.2-1b-finetome"
   },
   // "postStartCommand": "ollama serve &",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspace/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspace/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspace/portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached",
     "source=${localWorkspaceFolderBasename}-ollama,type=volume,target=/root/.ollama"
   ]
 }
