@@ -9,8 +9,8 @@
 **/python_venv/*
 __pycache__/
 
-Node/portfolio-vitrine/
-Node/Flow
+Node/portfolio-vitrine
+Node/flow-app
 
 Rust/pwiz-gui
 Rust/pwiz-web
