@@ -2,9 +2,21 @@
   "name": "Portfolio Vitrine",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "forwardPorts": [3000, 5000],
+  "forwardPorts": [
+    3000,
+    5000,
+    11434, // Ollama API
+    19000, // Expo dev server (web)
+    19001, // Expo packager
+    19002 // Expo Metro bundler
+  ],
   "portsAttributes": {
     "3000": {
       "label": "React Frontend",
@@ -23,7 +35,15 @@
         "ms-vscode.vscode-typescript-next",
         "syler.sass-indented",
         "xabikos.JavaScriptSnippets",
-        "formulahendry.auto-rename-tag"
+        "formulahendry.auto-rename-tag",
+        "supabase.supabase",
+        "expo.vscode-expo-tools",
+        "prisma.prisma",
+        "rangav.vscode-thunder-client",
+        "ms-vscode.cpptools", // utile si tu touches à Ollama plus tard
+        "eamodio.gitlens",
+        "github.copilot",
+        "github.copilot-chat"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -48,12 +68,19 @@
       }
     }
   },
-  "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript react-scripts sass && npm install",
+  "postCreateCommand": {
+    "init_portfolio": "cd portfolio-vitrine && npm install -g typescript react-scripts sass && npm install",
+    "expo-eas-cli": "npm install -g expo-cli eas-cli",
+    "supabase-cli": "npm install -g supabase",
+    "ollama": "curl -fsSL https://ollama.com/install.sh | sh && ollama pull happyaiuser/llama3.2-1b-finetome"
+  },
+  // "postStartCommand": "ollama serve &",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached",
+    "source=/home/loic/devcontainer-configs/Node/ollama,type=volume,target=/root/.ollama"
   ],
   "remoteUser": "loic",
   "containerUser": "loic"
