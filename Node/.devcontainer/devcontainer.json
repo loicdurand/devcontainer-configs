@@ -67,6 +67,7 @@
     }
   },
   "postCreateCommand": {
+    "copy_bashrc": "echo alias ll=\\'ls -alF\\' >> /home/node/.bashrc",
     "init_portfolio": "cd portfolio-vitrine && npm install -g typescript sass react-scripts && npm install",
     "expo-eas-cli": "npm install -g expo-cli eas-cli",
     "supabase-cli": "mkdir -p flow-app && cd flow-app && npm install supabase",
