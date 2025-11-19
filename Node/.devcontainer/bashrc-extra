@@ -1,0 +1,23 @@
+# === Mes alias & vars persistants pour tous les devcontainers ===
+export SUPABASE_LOCAL_DOCKERLESS=1   # plus jamais le message Docker Desktop
+
+# Alias utiles pour ce projet
+alias sb="npx supabase"
+alias sbs="npx supabase start"
+alias sbd="npx supabase stop"
+alias sbr="npx supabase reset"
+alias oll="ollama list"
+alias olr="ollama run llama3.2:8b"
+
+# Expo shortcuts
+alias ea="expo start"
+alias eac="expo start --clear"
+
+# Couleurs terminal + historique infini
+export HISTFILESIZE=-1
+export HISTSIZE=-1
+export PROMPT_COMMAND='history -a'
+[ -r /etc/profile.d/bash_completion.sh ] && . /etc/profile.d/bash_completion.sh
+
+alias ll='ls -alF'
+alias ..='cd ..'

@@ -9,6 +9,8 @@
 **/python_venv/*
 __pycache__/
 
+*/.devcontainer/host-env.list
+
 Node/portfolio-vitrine
 Node/flow-app
 
