@@ -60,9 +60,9 @@
     }
   },
   "postCreateCommand": [
-    "npm install -g typescript react-scripts sass expo-cli eas-cli",
-    "cd portfolio-vitrine && npm install",
-    "mkdir -p flow-app && cd flow-app && npm install supabase"
+    "npm install -g typescript react-scripts sass;",
+    "cd /workspaces/devcontainer-configs/Node/portfolio-vitrine && npm install;",
+    "mkdir -p /workspaces/devcontainer-configs/Node/flow-app && cd /workspaces/devcontainer-configs/Node/flow-app && npm install supabase expo-cli eas-cli;"
     // "npx supabase init || true",
     // "echo 'SUPABASE_LOCAL_DOCKERLESS=1' >> .supabase/.env || true",
     // "ollama": "curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz | sudo tar zx -C /usr  && ollama pull happyaiuser/llama3.2-1b-finetome"
