@@ -33,7 +33,8 @@
         "ms-vscode.vscode-typescript-next",
         "syler.sass-indented",
         "xabikos.JavaScriptSnippets",
-        "formulahendry.auto-rename-tag"
+        "formulahendry.auto-rename-tag",
+        "denoland.vscode-deno"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
