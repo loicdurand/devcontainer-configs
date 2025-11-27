@@ -23,7 +23,7 @@ services:
       - php-net
     depends_on:
       - mysql
-      - lldap
+      - openldap
 
   mysql:
     image: mysql:8.0
@@ -50,26 +50,17 @@ services:
     networks:
       - php-net
 
-  lldap:
-    container_name: lldap
-    build:
-      context: .
-      dockerfile: Dockerfile.lldap
+  openldap:
+    container_name: openldap
+    image: alpine:latest
+    command: sh -c "apk add --no-cache openldap openldap-back-mdb && slapd -d 256 -f /etc/openldap/slapd.conf"
     environment:
-      - TZ=-04:00
-      - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
-      - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"
-      - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
-      - LLDAP_LDAP_USER_DN="admin"
-      - LLDAP_LDAP_USER_PASS="my_password"
-      - LOG_LEVEL="debug"
-      - LLDAP_FORCE_UPDATE_PRIVATE_KEY=false
+      TZ: -04:00
     volumes:
-      - ./ldif:/data:rw
-      - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro
-    entrypoint: ["/app/entrypoint.sh"]
-    depends_on:
-      - mysql
+      - openldap-data:/var/lib/openldap/openldap-data
+    ports:
+      - "389:389"
+      - "636:636"
     networks:
       - php-net
 
@@ -82,13 +73,15 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
     - php
-    - lldap
+    - openldap
     - phpmyadmin
     networks:
       - php-net
 
 volumes:
   mysql-data:
+  openldap-data:
+  openldap-config:
 
 networks:
   php-net:

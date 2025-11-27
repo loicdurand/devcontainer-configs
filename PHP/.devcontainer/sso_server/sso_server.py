@@ -7,8 +7,8 @@ import base64
 app = Flask(__name__)
 
 # Config LDAP
-LDAP_SERVER = 'ldap://lldap:3890'  # URL de ton LDAP
-LDAP_USER_DN = 'uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # DN de l'admin LDAP
+LDAP_SERVER = 'ldap://openldap:389'  # URL d'OpenLDAP
+LDAP_USER_DN = 'cn=admin,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # DN de l'admin OpenLDAP
 LDAP_PASSWORD = 'my_password'  # Mot de passe admin
 LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annuaire
 
