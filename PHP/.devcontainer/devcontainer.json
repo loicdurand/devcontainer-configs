@@ -6,11 +6,17 @@
   "remoteUser": "loic",
   "containerUser": "loic",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/git:1": {
+      "dockerSocketPath": "/var/run/docker.sock",
+      "overrideCommand": false
+    }
   },
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,type=bind,consistency=cached"
   ],
+  "remoteEnv": {
+    "DOCKER_GID": "959" // Remplacez 972 par VOTRE numéro trouvé ci-dessus
+  },
   // "forwardPorts": [
   //   80
   // ],

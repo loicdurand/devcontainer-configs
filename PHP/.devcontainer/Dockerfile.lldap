@@ -1,4 +1,5 @@
 FROM lldap/lldap:latest
 
 # Installer mysql-client pour mysqladmin
+USER root
 RUN apk add --no-cache mysql-client

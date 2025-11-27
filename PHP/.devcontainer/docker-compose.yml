@@ -5,9 +5,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ../:/workspace:cached
-    # command: sleep infinity
-    # ports:
-    #   - "8000:80"  # App accessible directement
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf:ro
     networks:
       - php-net
     depends_on:
@@ -53,6 +51,7 @@ services:
       - php-net
 
   lldap:
+    container_name: lldap
     build:
       context: .
       dockerfile: Dockerfile.lldap
@@ -85,12 +84,6 @@ services:
     - php
     - lldap
     - phpmyadmin
-      # php:
-      #   condition: service_healthy
-      # lldap:
-      #   condition: service_started
-      # phpmyadmin:
-      #   condition: service_started
     networks:
       - php-net
 
