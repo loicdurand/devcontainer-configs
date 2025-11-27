@@ -32,7 +32,7 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: my_password
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./mysql-data:/var/lib/mysql:rw
       - ./mysql-init:/docker-entrypoint-initdb.d:ro
     networks:
       - php-net
