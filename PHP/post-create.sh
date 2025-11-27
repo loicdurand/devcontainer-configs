@@ -17,11 +17,12 @@ for app in {"accueil","resa","vote"}; do
         git checkout main
         git pull
 
+        composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
+        # echo "Composer dependencies installed."
+
         # Install Node.js + Composer dependencies
         npm install || echo "Warning: npm install failed, continuing..."
         # echo "Node.js dependencies installed."
-        composer install --no-interaction || echo "Warning: Composer install failed, continuing..."
-        # echo "Composer dependencies installed."
 
         # php bin/console secrets:set APP_SECRET || echo "Warning: Setting APP_SECRET failed, continuing..."
         # DATABASE_URL="mysql://root:${MYSQL_PASSWORD}@mysql:3306/$app?serverVersion=8.0.32&charset=utf8mb4"
