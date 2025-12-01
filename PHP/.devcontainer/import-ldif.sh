@@ -1,17 +1,16 @@
 #!/bin/bash
 
 # LLDAP
-LLDAP_DATABASE_URL=mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0
-LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr" # ok
+LLDAP_LDAP_BASE_DN="dc=mon-entreprise,dc=com"
 LLDAP_JWT_SECRET=876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd
 LLDAP_LDAP_USER_DN=admin
 LLDAP_LDAP_USER_PASS=my_password
 LLDAP_LOG_LEVEL=debug
 
 LDIF_FILE=$1
-LDAP_HOST="lldap"
-LDAP_PORT=3890
-LDAP_BIND_DN="uid=${LLDAP_LDAP_USER_DN},ou=people,${LLDAP_LDAP_BASE_DN}"
+LDAP_HOST="openldap"
+LDAP_PORT=389
+LDAP_BIND_DN="cn=${LLDAP_LDAP_USER_DN},${LLDAP_LDAP_BASE_DN}"
 LDAP_BIND_PW="${LLDAP_LDAP_USER_PASS}"
 
 if [ -z "$LDIF_FILE" ]; then

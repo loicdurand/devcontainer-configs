@@ -1,0 +1,7 @@
+dn: uid=loic-j.durand,ou=people,dc=mon-entreprise,dc=com
+changetype: modify
+replace: departmentNumber
+departmentNumber: 00086977
+-
+add: description
+description: Affecté au DSOLC Baie-Mahault

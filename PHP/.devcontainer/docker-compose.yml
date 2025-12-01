@@ -8,6 +8,8 @@ services:
       - ./apache.conf:/etc/apache2/sites-available/000-default.conf:ro
     networks:
       - php-net
+    ports:
+      - "8000:80"
     depends_on:
       - mysql
 
@@ -52,12 +54,22 @@ services:
 
   openldap:
     container_name: openldap
-    image: alpine:latest
-    command: sh -c "apk add --no-cache openldap openldap-back-mdb && slapd -d 256 -f /etc/openldap/slapd.conf"
+    image: osixia/openldap:latest
+    # Plus besoin de la commande apk add, l'image contient d�j� tout
     environment:
-      TZ: -04:00
+      # Configuration de base du domaine (ex: dc=mon-entreprise,dc=com)
+      LDAP_ORGANISATION: "Mon Entreprise"
+      LDAP_DOMAIN: "mon-entreprise.com"
+      
+      # Le mot de passe Admin !
+      LDAP_ADMIN_PASSWORD: "my_password" 
+      
+      # Optionnel : active le debug pour voir ce qui se passe
+      LDAP_LOG_LEVEL: "256"
     volumes:
-      - openldap-data:/var/lib/openldap/openldap-data
+      - openldap-data:/var/lib/ldap
+      - openldap-config:/etc/ldap/slapd.d
+      - ./ldifs:/docker-entrypoint-initdb.d:ro
     ports:
       - "389:389"
       - "636:636"

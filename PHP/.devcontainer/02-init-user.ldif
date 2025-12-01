@@ -1,0 +1,25 @@
+# Création de la branche People
+dn: ou=people,dc=mon-entreprise,dc=com
+objectClass: organizationalUnit
+ou: people
+
+# Création de l'utilisateur
+dn: uid=loic-j.durand,ou=people,dc=mon-entreprise,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: loic-j.durand
+cn: Loic Durand
+sn: Durand
+givenname: loic
+displayName: ADJ loic Durand
+# "title" est standard
+title: ADJ
+# "dptunite" -> departmentNumber (standard)
+departmentNumber: 971
+# "userid" -> employeeNumber (standard)
+employeeNumber: 249205
+# Les champs responsablité/spécialité n'existent pas, on les ajoute en description
+description: Responsabilite: A - Specialite: CYBERNUM
+userPassword: my_password
