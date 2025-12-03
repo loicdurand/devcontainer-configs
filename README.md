@@ -1,14 +1,9 @@
 # Mes devcontainers
 
 Mon environnement de travail, quasiment prêt à l'emploi.
-Celui-ci contient des sous-module *git* privés.
 Ne l'utilisez pas tel quel, mais forkez-le librement et adaptez-le à vos besoins.
 
 ## Points à adapter
-
-### Sous-modules
-
-- Un fichier **.gitmodule** à la racine de ce répo est présent. Remplacez les chemins et noms des sous-modules selon votre arborescence.
 
 ### Utilisateur
 
