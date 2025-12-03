@@ -1,0 +1,5 @@
+# Création de l'Unité organisationnelle
+dn: ou=00098765,dc=mon-entreprise,dc=com
+objectClass: organizationalUnit
+ou: UNITE Baie-Mahault
+description: Nom de l'Unité de BAIE-MAHAULT - Code: 00098765

@@ -2,9 +2,19 @@
   "name": "Portfolio Vitrine",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
   },
-  "forwardPorts": [3000, 5000],
+  "forwardPorts": [
+    3000,
+    5000,
+    11434, // Ollama API
+    19000, // Expo dev server (web)
+    19001, // Expo packager
+    19002 // Expo Metro bundler
+  ],
   "portsAttributes": {
     "3000": {
       "label": "React Frontend",
@@ -23,7 +33,8 @@
         "ms-vscode.vscode-typescript-next",
         "syler.sass-indented",
         "xabikos.JavaScriptSnippets",
-        "formulahendry.auto-rename-tag"
+        "formulahendry.auto-rename-tag",
+        "denoland.vscode-deno"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -48,13 +59,27 @@
       }
     }
   },
-  "postCreateCommand": "cd portfolio-vitrine && npm install -g typescript react-scripts sass && npm install",
+  "postCreateCommand": [
+    "npm install -g typescript react-scripts sass;",
+    "cd /workspaces/devcontainer-configs/Node/portfolio-vitrine && npm install;",
+    "mkdir -p /workspaces/devcontainer-configs/Node/flow-app && cd /workspaces/devcontainer-configs/Node/flow-app && npm install supabase expo-cli eas-cli;"
+    // "npx supabase init || true",
+    // "echo 'SUPABASE_LOCAL_DOCKERLESS=1' >> .supabase/.env || true",
+    // "ollama": "curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz | sudo tar zx -C /usr  && ollama pull happyaiuser/llama3.2-1b-finetome"
+  ],
+  "postStartCommand": "echo '[[ -f ~/.bashrc_extra ]] && . ~/.bashrc_extra' >> ~/.bashrc || true",
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.devcontainer/bashrc-extra,type=bind,target=/home/node/.bashrc_extra",
+    "source=${localWorkspaceFolderBasename}-ollama,type=volume,target=/root/.ollama"
   ],
-  "remoteUser": "loic",
-  "containerUser": "loic"
+  "runArgs": [
+    "--add-host=host.docker.internal:host-gateway",
+    "--env-file=${localWorkspaceFolder}/.devcontainer/host-env.list"
+  ],
+  "remoteUser": "node",
+  "containerUser": "node"
 }

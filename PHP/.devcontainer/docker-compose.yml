@@ -5,11 +5,11 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ../:/workspace:cached
-    # command: sleep infinity
-    # ports:
-    #   - "8000:80"  # App accessible directement
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf:ro
     networks:
       - php-net
+    ports:
+      - "8000:80"
     depends_on:
       - mysql
 
@@ -25,7 +25,7 @@ services:
       - php-net
     depends_on:
       - mysql
-      - lldap
+      - openldap
 
   mysql:
     image: mysql:8.0
@@ -34,7 +34,7 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: my_password
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./mysql-data:/var/lib/mysql:rw
       - ./mysql-init:/docker-entrypoint-initdb.d:ro
     networks:
       - php-net
@@ -52,24 +52,27 @@ services:
     networks:
       - php-net
 
-  lldap:
-    build:
-      context: .
-      dockerfile: Dockerfile.lldap
+  openldap:
+    container_name: openldap
+    image: osixia/openldap:latest
+    # Plus besoin de la commande apk add, l'image contient d�j� tout
     environment:
-      - TZ=-04:00
-      - LLDAP_DATABASE_URL="mysql://admin:my_password@mysql:3306/lldap?serverVersion=8.0"
-      - LLDAP_LDAP_BASE_DN="dc=gendarmerie,dc=defense,dc=gouv,dc=fr"
-      - LLDAP_JWT_SECRET="876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd"
-      - LLDAP_LDAP_USER_DN="admin"
-      - LLDAP_LDAP_USER_PASS="my_password"
-      - LOG_LEVEL="debug"
+      # Configuration de base du domaine (ex: dc=mon-entreprise,dc=com)
+      LDAP_ORGANISATION: "Mon Entreprise"
+      LDAP_DOMAIN: "mon-entreprise.com"
+      
+      # Le mot de passe Admin !
+      LDAP_ADMIN_PASSWORD: "my_password" 
+      
+      # Optionnel : active le debug pour voir ce qui se passe
+      LDAP_LOG_LEVEL: "256"
     volumes:
-      - ./ldif:/data:rw
-      - ./lldap-entrypoint.sh:/app/entrypoint.sh:ro
-    entrypoint: ["/app/entrypoint.sh"]
-    depends_on:
-      - mysql
+      - openldap-data:/var/lib/ldap
+      - openldap-config:/etc/ldap/slapd.d
+      - ./ldifs:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "389:389"
+      - "636:636"
     networks:
       - php-net
 
@@ -82,19 +85,15 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
     - php
-    - lldap
+    - openldap
     - phpmyadmin
-      # php:
-      #   condition: service_healthy
-      # lldap:
-      #   condition: service_started
-      # phpmyadmin:
-      #   condition: service_started
     networks:
       - php-net
 
 volumes:
   mysql-data:
+  openldap-data:
+  openldap-config:
 
 networks:
   php-net:

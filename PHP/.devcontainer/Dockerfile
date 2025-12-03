@@ -26,6 +26,7 @@ RUN docker-php-ext-install \
     intl \
     exif \
     ldap \
+    gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -43,7 +44,7 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
 RUN a2enmod rewrite headers
-COPY .devcontainer/apache.conf /etc/apache2/sites-available/000-default.conf
+# COPY .devcontainer/apache.conf /etc/apache2/sites-available/000-default.conf
 
 # RUN git clone https://github.com/loicdurand/accueil.git
 

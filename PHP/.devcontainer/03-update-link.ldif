@@ -1,0 +1,7 @@
+dn: uid=john.doe,ou=person,dc=mon-entreprise,dc=com
+changetype: modify
+replace: departmentNumber
+departmentNumber: 00098765
+-
+add: description
+description: Affecté au UNITE Baie-Mahault

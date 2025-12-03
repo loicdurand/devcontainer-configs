@@ -1,36 +1,31 @@
 {
-  "name": "Flutter Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/flutter:1": {
-      "version": "stable"
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "Dart-Code.dart-code",
-        "Dart-Code.flutter"
-      ],
-      "settings": {
-        "editor.fontSize": 18,
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "/bin/bash",
-            "icon": "terminal-bash"
-          }
+    "name": "Flutter CLI Development with Firebase (Headless)",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+    "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21", // OpenJDK 21 stable pour Android builds
+            "installMaven": false,
+            "installGradle": false
         }
-      }
-    }
-  },
-  "postCreateCommand": "flutter pub get",
-  "portsAttributes": {
-    "8080": {
-      "label": "Flutter Web",
-      "onAutoForward": "notify"
-    }
-  },
-  "remoteUser": "loic"
+    },
+    "mounts": [
+        "source=/home/loic/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/,target=/workspace/${localWorkspaceFolderBasename}/,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Dart-Code.flutter",
+                "Dart-Code.dart-code",
+                "ms-vscode.vscode-nodejs-extension-pack",
+                "Firebase.firebase-snippets"
+            ]
+        }
+    },
+    "forwardPorts": [
+        5037
+    ]
 }
