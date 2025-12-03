@@ -17,7 +17,7 @@ SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'
 
 # Attributs à récupérer
 # ATTRIBUTES = ['memberOf', 'mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'specialite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
-ATTRIBUTES = ['departmentNumber', 'mail', 'employeeType', 'displayname', 'givenName', 'title', 'uid', 'sn']
+ATTRIBUTES = ['departmentNumber', 'displayname', 'givenName', 'employeeNumber', 'title', 'uid', 'sn', 'description']
 
 # Attributs à récupérer pour les groupes
 GROUP_ATTRIBUTES = ['ou']
@@ -123,6 +123,16 @@ def login():
                         print(f"Attributs du groupe {member_of}: {group_data}")
                 else:
                     print(f"Aucun attribut trouvé pour le groupe {member_of}")
+
+            # Ajout des champs personnalisés propre à l'Institution
+            user_attributes['mail'] = user_attributes.get('uid', '') + '@mon-entreprise.com'
+            description = user_attributes.get('description', '')[0] # employeeType: SOG - Responsabilite: A - Specialite: CYBERNUM
+            desc_parts = description.split(' - ')
+            for part in desc_parts:
+                [key,value] = part.split(':')
+                key = key.strip()
+                value = value.strip()
+                user_attributes[key] = value
 
             # Authentification réussie, générer un token JWT avec les attributs
             token = jwt.encode({

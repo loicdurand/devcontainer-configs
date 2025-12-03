@@ -1,7 +1,7 @@
-# On crée un groupe "Les personels de l'unité 00086977"
-dn: cn=groupe_00086977,ou=00086977,dc=mon-entreprise,dc=com
+# On crée un groupe "Les personels de l'unité 00098765"
+dn: cn=groupe_00098765,ou=00098765,dc=mon-entreprise,dc=com
 objectClass: groupOfNames
-cn: groupe_00086977
+cn: groupe_00098765
 description: Groupe contenant tous les membres de l'unité
 # Un groupe doit avoir au moins un membre à la création
-member: uid=loic-j.durand,ou=people,dc=mon-entreprise,dc=com
+member: uid=john.doe,ou=person,dc=mon-entreprise,dc=com

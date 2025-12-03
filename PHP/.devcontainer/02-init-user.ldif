@@ -1,25 +1,25 @@
-# Création de la branche People
-dn: ou=people,dc=mon-entreprise,dc=com
+# Création de la branche Person
+dn: ou=person,dc=mon-entreprise,dc=com
 objectClass: organizationalUnit
-ou: people
+ou: person
 
 # Création de l'utilisateur
-dn: uid=loic-j.durand,ou=people,dc=mon-entreprise,dc=com
+dn: uid=john.doe,ou=person,dc=mon-entreprise,dc=com
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
-uid: loic-j.durand
-cn: Loic Durand
-sn: Durand
-givenname: loic
-displayName: ADJ loic Durand
+uid: john.doe
+cn: John DOE
+sn: Doe
+givenname: John
+displayName: Me John DOE (UNITE Baie-Mahault)
 # "title" est standard
-title: ADJ
+title: Me
 # "dptunite" -> departmentNumber (standard)
 departmentNumber: 971
 # "userid" -> employeeNumber (standard)
-employeeNumber: 249205
+employeeNumber: 123456
 # Les champs responsablité/spécialité n'existent pas, on les ajoute en description
-description: Responsabilite: A - Specialite: CYBERNUM
+description: nigend: 123456 - employeeType: SOG - responsabilite: A - specialite: MYSPE
 userPassword: my_password
