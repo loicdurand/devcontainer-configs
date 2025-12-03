@@ -1,9 +1,0 @@
-# Unité organisationnelle 00012345
-dn: ou=00012345,dc=example,dc=org
-objectClass: organizationalUnit
-ou: nom court
-description: nom en toutes lettres
-codeunite: 00012345
-
-add: memberUid
-memberUid: john.doe

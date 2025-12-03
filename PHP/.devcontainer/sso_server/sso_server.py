@@ -7,19 +7,20 @@ import base64
 app = Flask(__name__)
 
 # Config LDAP
-LDAP_SERVER = 'ldap://lldap:3890'  # URL de ton LDAP
-LDAP_USER_DN = 'uid=admin,ou=people,dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # DN de l'admin LDAP
+LDAP_SERVER = 'ldap://openldap:389'  # URL d'OpenLDAP
+LDAP_USER_DN = 'cn=admin,dc=mon-entreprise,dc=com'  # DN de l'admin OpenLDAP
 LDAP_PASSWORD = 'my_password'  # Mot de passe admin
-LDAP_BASE_DN = 'dc=gendarmerie,dc=defense,dc=gouv,dc=fr'  # Base DN de ton annuaire
+LDAP_BASE_DN = 'dc=mon-entreprise,dc=com'  # Base DN de ton annuaire
 
 # Clé secrète pour JWT (à changer en prod, évidemment!)
 SECRET_KEY = '876a490cbae8d2275b3f401763ac6f89562f82ea85f3a5b60b710e289f1a45dd'  
 
 # Attributs à récupérer
-ATTRIBUTES = ['memberOf', 'mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'specialite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
+# ATTRIBUTES = ['memberOf', 'mail', 'employeeType', 'responsabilite', 'displayname', 'givenName', 'nigend', 'specialite', 'title', 'dptUnite', 'uid', 'codeUnitesSup', 'sn']
+ATTRIBUTES = ['departmentNumber', 'displayname', 'givenName', 'employeeNumber', 'title', 'uid', 'sn', 'description']
 
 # Attributs à récupérer pour les groupes
-GROUP_ATTRIBUTES = ['codeunite', 'displayname']
+GROUP_ATTRIBUTES = ['ou']
 
 # Page de login simulée
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,7 +34,7 @@ def login():
                 redirect_uri = base64.b64decode(encoded_url).decode('utf-8')
                 print(f"Redirect URI décodé: '{redirect_uri}'")
             else:
-                redirect_uri = 'http://localhost:5000/validate'  # Valeur par défaut si pas de paramètre url
+                redirect_uri = 'http://sso:5000/validate'  # Valeur par défaut si pas de paramètre url
         except Exception as e:
             print(f"Erreur lors du décodage de redirect_uri: {str(e)}")
             return jsonify({'error': 'Invalid redirect_uri'}), 400
@@ -79,13 +80,13 @@ def login():
         # Recherche de l'utilisateur
         print(f"Recherche de l'utilisateur: uid={username}")
         conn.search(
-            search_base=f'ou=people,{LDAP_BASE_DN}',
+            search_base=LDAP_BASE_DN,
             search_filter=f'(uid={username})',
             search_scope=SUBTREE,
             attributes=ATTRIBUTES  # Récupérer les attributs personnalisés
         )
         if not conn.entries:
-            print(f"Utilisateur '{username}' non trouvé dans ou=people,{LDAP_BASE_DN}")
+            print(f"Utilisateur '{username}' non trouvé,{LDAP_BASE_DN}")
             conn.unbind()
             return jsonify({'error': 'User not found'}), 401
 
@@ -101,26 +102,37 @@ def login():
             # Récupérer les attributs pour le JWT
             user_attributes = {attr: conn.entries[0][attr].value for attr in ATTRIBUTES if attr in conn.entries[0]}
 
-            # Récupérer les attributs de groupe via memberOf
-            if 'memberOf' in user_attributes:
-                member_of = user_attributes["memberOf"]  # Liste des DN des groupes
-                print(f"Groupes trouvés (memberOf): {member_of}")
-                if not isinstance(member_of, list):
-                    member_of=[member_of]
-                for group_dn in member_of:
-                    conn.search(
-                        search_base=group_dn,
-                        search_filter='(objectClass=*)',
-                        search_scope=SUBTREE,
-                        attributes=GROUP_ATTRIBUTES
-                    )
-                    if conn.entries :
-                        group_data = {attr: conn.entries[0][attr].value for attr in GROUP_ATTRIBUTES if attr in conn.entries[0]}
-                        if group_data['codeunite'] is not None:
-                            group_attrs = group_data
-                            print(f"Attributs du groupe {group_dn}: {group_data}")
-                    else:
-                        print(f"Aucun attribut trouvé pour le groupe {group_dn}")
+            # Récupérer les attributs de groupe via departmentNumber
+            if 'departmentNumber' in user_attributes:
+                member_of = user_attributes["departmentNumber"]   # Liste des DN des groupes
+                print(f"Groupe trouvé (departmentNumber): {member_of} -> attributes: {GROUP_ATTRIBUTES}")
+                # if not isinstance(member_of, list):
+                #     member_of=[member_of]
+                # for group_dn in member_of:
+                conn.search(
+                    search_base=f'ou={member_of},{LDAP_BASE_DN}',
+                    search_filter='(objectClass=organizationalUnit)',
+                    search_scope=SUBTREE,
+                    attributes=GROUP_ATTRIBUTES
+                )
+                if conn.entries :
+                    group_data = {attr: conn.entries[0][attr].value for attr in GROUP_ATTRIBUTES if attr in conn.entries[0]}
+                    print(f"Attributs trouvés pour le groupe {member_of}: {group_data}")
+                    if group_data['ou'] is not None:
+                        group_attrs = group_data
+                        print(f"Attributs du groupe {member_of}: {group_data}")
+                else:
+                    print(f"Aucun attribut trouvé pour le groupe {member_of}")
+
+            # Ajout des champs personnalisés propre à l'Institution
+            user_attributes['mail'] = user_attributes.get('uid', '') + '@mon-entreprise.com'
+            description = user_attributes.get('description', '')[0] # employeeType: SOG - Responsabilite: A - Specialite: CYBERNUM
+            desc_parts = description.split(' - ')
+            for part in desc_parts:
+                [key,value] = part.split(':')
+                key = key.strip()
+                value = value.strip()
+                user_attributes[key] = value
 
             # Authentification réussie, générer un token JWT avec les attributs
             token = jwt.encode({

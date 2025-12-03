@@ -1,0 +1,25 @@
+# Création de la branche Person
+dn: ou=person,dc=mon-entreprise,dc=com
+objectClass: organizationalUnit
+ou: person
+
+# Création de l'utilisateur
+dn: uid=john.doe,ou=person,dc=mon-entreprise,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: john.doe
+cn: John DOE
+sn: Doe
+givenname: John
+displayName: Me John DOE (UNITE Baie-Mahault)
+# "title" est standard
+title: Me
+# "dptunite" -> departmentNumber (standard)
+departmentNumber: 971
+# "userid" -> employeeNumber (standard)
+employeeNumber: 123456
+# Les champs responsablité/spécialité n'existent pas, on les ajoute en description
+description: nigend: 123456 - employeeType: SOG - responsabilite: A - specialite: MYSPE
+userPassword: my_password

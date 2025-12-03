@@ -6,14 +6,20 @@
   "remoteUser": "loic",
   "containerUser": "loic",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/git:1": {
+      "dockerSocketPath": "/var/run/docker.sock",
+      "overrideCommand": false
+    }
   },
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/loic/.gitconfig,type=bind,consistency=cached"
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,type=bind,consistency=cached"
   ],
-  "forwardPorts": [
-    80
-  ],
+  "remoteEnv": {
+    "DOCKER_GID": "959" // Remplacez 972 par VOTRE numéro trouvé ci-dessus
+  },
+  // "forwardPorts": [
+  //   80
+  // ],
   // "forwardPorts": [
   //   8000,
   //   5000,
@@ -21,7 +27,7 @@
   //   17170,
   //   3900
   // ],
-  "postCreateCommand": "bash post-create.sh",
+  // "postCreateCommand": "bash post-create.sh",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -44,6 +50,11 @@
         "editor.formatOnSave": true,
         "editor.fontSize": 18,
         "terminal.integrated.defaultProfile.linux": "bash",
+        "files.watcherExclude": {
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/*/**": true
+        },
         "terminal.integrated.profiles.linux": {
           "bash": {
             "path": "/bin/bash",
