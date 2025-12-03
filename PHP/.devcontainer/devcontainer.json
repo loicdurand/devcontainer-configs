@@ -27,7 +27,7 @@
   //   17170,
   //   3900
   // ],
-  // "postCreateCommand": "bash post-create.sh",
+  "postCreateCommand": "bash /workspace/.devcontainer/post-create.sh",
   "customizations": {
     "vscode": {
       "extensions": [
