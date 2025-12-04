@@ -8,8 +8,8 @@ services:
       - ./apache.conf:/etc/apache2/sites-available/000-default.conf:ro
     networks:
       - php-net
-    ports:
-      - "8000:80"
+    # ports:
+    #   - "8000:80"
     depends_on:
       - mysql
 

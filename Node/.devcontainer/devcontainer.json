@@ -60,12 +60,11 @@
     }
   },
   "postCreateCommand": [
-    "npm install -g typescript react-scripts sass;",
-    "cd /workspaces/devcontainer-configs/Node/portfolio-vitrine && npm install;",
-    "mkdir -p /workspaces/devcontainer-configs/Node/flow-app && cd /workspaces/devcontainer-configs/Node/flow-app && npm install supabase expo-cli eas-cli;"
+    // "npm install -g typescript react-scripts sass;",
+    // "cd /workspaces/devcontainer-configs/Node/portfolio-vitrine && npm install;",
+    // "mkdir -p /workspaces/devcontainer-configs/Node/flow-app && cd /workspaces/devcontainer-configs/Node/flow-app && npm install supabase expo-cli eas-cli;"
     // "npx supabase init || true",
     // "echo 'SUPABASE_LOCAL_DOCKERLESS=1' >> .supabase/.env || true",
-    // "ollama": "curl -fsSL https://ollama.com/download/ollama-linux-amd64.tgz | sudo tar zx -C /usr  && ollama pull happyaiuser/llama3.2-1b-finetome"
   ],
   "postStartCommand": "echo '[[ -f ~/.bashrc_extra ]] && . ~/.bashrc_extra' >> ~/.bashrc || true",
   "mounts": [
@@ -73,8 +72,7 @@
     "source=${localWorkspaceFolder}/portfolio-vitrine/frontend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/frontend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/portfolio-vitrine/backend/node_modules,type=bind,consistency=cached",
     "source=${localWorkspaceFolder}/portfolio-vitrine/backend/src/db/db.json,target=/workspaces/${localWorkspaceFolderBasename}//portfolio-vitrine/backend/src/db/db.json,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/.devcontainer/bashrc-extra,type=bind,target=/home/node/.bashrc_extra",
-    "source=${localWorkspaceFolderBasename}-ollama,type=volume,target=/root/.ollama"
+    "source=${localWorkspaceFolder}/.devcontainer/bashrc-extra,type=bind,target=/home/node/.bashrc_extra"
   ],
   "runArgs": [
     "--add-host=host.docker.internal:host-gateway",
