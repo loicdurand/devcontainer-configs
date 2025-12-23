@@ -15,18 +15,8 @@
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,type=bind,consistency=cached"
   ],
   "remoteEnv": {
-    "DOCKER_GID": "959" // Remplacez 972 par VOTRE numéro trouvé ci-dessus
+    "DOCKER_GID": "959" // Remplacez 972 par VOTRE numéro
   },
-  // "forwardPorts": [
-  //   80
-  // ],
-  // "forwardPorts": [
-  //   8000,
-  //   5000,
-  //   3306,
-  //   17170,
-  //   3900
-  // ],
   "postCreateCommand": "bash /workspace/.devcontainer/post-create.sh",
   "customizations": {
     "vscode": {
